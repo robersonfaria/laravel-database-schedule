@@ -38,11 +38,13 @@
     @error('expression')
     <div class="invalid-feedback">{{ $message }}</div>
     @enderror
-    <small id="expressiondHelpBlock" class="form-text text-muted">
-        <a href="https://www.freeformatter.com/cron-expression-generator-quartz.html" target="_blank">
-            If necessary click here and use a tool to facilitate the creation of the cron expression
-        </a>
-    </small>
+    @if(config('database-schedule.tool-help-cron-expression.enable'))
+        <small id="expressiondHelpBlock" class="form-text text-muted">
+            <a href="{{ config('database-schedule.tool-help-cron-expression.url') }}" target="_blank">
+                {{ trans("schedule::schedule.messages.help-cron-expression") }}
+            </a>
+        </small>
+    @endif
 </div>
 
 <div class="form-group">
@@ -144,8 +146,8 @@
         })
 
         function hasParams(command) {
-            if(command !== undefined) {
-                if(command.arguments.length > 0){
+            if (command !== undefined) {
+                if (command.arguments.length > 0) {
                     $("#parameters").show()
                 } else {
                     $("#parameters").hide()
@@ -158,7 +160,7 @@
 
         function addField(argument) {
             var value = argument.default;
-            if(argument.name !== undefined && request!== null && request[argument.name] !== undefined) {
+            if (argument.name !== undefined && request !== null && request[argument.name] !== undefined) {
                 value = request[argument.name]
             }
             var label = $("<label/>").html(argument.name + ":")

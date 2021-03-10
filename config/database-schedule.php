@@ -74,5 +74,10 @@ return [
             'schedule:*',
             'view:*'
         ]
+    ],
+
+    'tool-help-cron-expression' => [
+        'enable' => true,
+        'url' => 'https://crontab.cronhub.io/'
     ]
 ];

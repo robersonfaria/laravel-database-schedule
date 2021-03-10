@@ -23,7 +23,8 @@ return [
         'save-success' => 'Data saved successfully.',
         'save-error' => 'Error saving data.',
         'timezone' => 'All schedules will be executed in the timezone: ',
-        'select' => 'Select a command'
+        'select' => 'Select a command',
+        'help-cron-expression' => 'If necessary click here and use a tool to facilitate the creation of the cron expression'
     ],
     'status' => [
         'active' => 'Active',
