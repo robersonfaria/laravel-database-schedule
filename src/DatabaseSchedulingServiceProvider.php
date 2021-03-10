@@ -36,7 +36,11 @@ class DatabaseSchedulingServiceProvider extends LaravelServiceProvider
 
         $this->publishes([
             __DIR__ . '/../resources/lang/' => resource_path('lang/vendor/schedule'),
-        ]);
+        ], 'translates');
+
+        $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/schedule'),
+        ], 'views');
 
         $config = $this->app['config'];
 
