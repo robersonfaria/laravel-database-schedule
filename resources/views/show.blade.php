@@ -60,6 +60,13 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer text-right">
+                <div class="row">
+                    <div class="col-6 text-left">
+                        <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@index') }}" class="btn btn-secondary">{{ trans('schedule::schedule.buttons.back') }}</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
