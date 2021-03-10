@@ -1,6 +1,6 @@
-@extends(config('database-schedule.template.extends'))
+@extends('schedule::layout.master')
 
-@section(config('database-schedule.template.section'))
+@section('content')
     <div class="container">
         @include('schedule::messages')
         <form action="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@store') }}" method="POST">

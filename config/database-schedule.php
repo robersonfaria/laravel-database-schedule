@@ -21,14 +21,6 @@ return [
     ],
 
     /**
-     * Views settings
-     */
-    'template' => [
-        'extends' => 'layouts.app',
-        'section' => 'content'
-    ],
-
-    /**
      * Route settings
      */
     'route' => [
