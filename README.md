@@ -30,6 +30,23 @@ There are several library configuration options, to change the settings you can 
 php artisan vendor:publish --provider="RobersonFaria\DatabaseSchedule\DatabaseSchedulingServiceProvider" --tag="config"
 ```
 
+### Dashboard Authorization
+
+Dashboard Authorization exposes a dashboard at `/schedule` URI.
+This route is protected by the `viewDatabaseSchedule` gate controls access.
+You are free to modify this gate as needed to restrict access to your Database Schedule Dashboard
+
+```php
+protected function gate()
+{
+    Gate::define('viewDatabaseSchedule', function ($user) {
+        return in_array($user->email, [
+            'roberson.faria@gmail.com',
+        ]);
+    });
+}
+```
+
 ## Credits
 
 * That library was inspired by the library [therezor/laravel-database-schedule](https://github.com/therezor/laravel-database-schedule)

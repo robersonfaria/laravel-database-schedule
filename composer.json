@@ -1,7 +1,7 @@
 {
   "name": "robersonfaria/laravel-database-schedule",
   "description": "Manage your Laravel Task Scheduling in a friendly interface and save schedules to the database.",
-  "type": "library",
+  "keywords": ["laravel", "schedule", "task", "jobs"],
   "license": "MIT",
   "require": {
     "php": "^7.0",
@@ -24,5 +24,7 @@
         "RobersonFaria\\DatabaseSchedule\\DatabaseSchedulingServiceProvider"
       ]
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

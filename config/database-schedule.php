@@ -13,6 +13,7 @@ return [
     ],
     'model' => Schedule::class,
     'timezone' => env('SCHEDULE_TIMEZONE', config('app.timezone')),
+    'middleware' => 'web',
 
     /**
      * Cache settings
