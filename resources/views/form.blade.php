@@ -26,17 +26,25 @@
         <div class="row">
             <div class="col-12">
                 <label>Parameters:</label>
-                <div id="div_params" class="ml-5" v-for="argument in commands[form.command].arguments" :key="argument.name">
-                    <div class="form-group">
+                <div id="div_params" class="ml-5 row" v-for="argument in commands[form.command].arguments" :key="argument.name">
+                    <div class="col-8">
                         <label>@{{ argument.name }}</label>
-                        <input type="text" class="form-control" :name="'params['+argument.name+']'"
+                        <input type="text" class="form-control" :name="'params['+argument.name+'][value]'"
                                :id="argument.name"
                                :value="getRequest(argument.name)"
                                :required="argument.required">
                     </div>
+                    <div class="col-4">
+                        <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
+                        <select :name="'params['+argument.name+'][type]'" v-model="requests[argument.name].type" class="form-control">
+                            <option value="string">String</option>
+                            <option value="function">Function</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
+        <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
     </div>
 
     <div class="form-group">
@@ -155,7 +163,7 @@
         methods: {
             getRequest: function (command) {
                 if(this.requests !== null && this.requests[command] !== undefined) {
-                    return this.requests[command];
+                    return this.requests[command].value;
                 }
                 return '';
             }

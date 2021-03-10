@@ -20,7 +20,7 @@
                             <td>{{ $schedule->command }}</td>
                             <td>
                                 @foreach($schedule->params as $param => $value)
-                                    {{ $param }}: {{ $value }}<br>
+                                    {{ $param }}: {{ $value['value'] }}<br>
                                 @endforeach
                             </td>
                             <td>{{ $schedule->expression }}</td>

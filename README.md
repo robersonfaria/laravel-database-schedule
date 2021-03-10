@@ -6,7 +6,7 @@ activated, inactivated or deleted via the interface without the need for a new a
 
 ![List Schedules](docs/list-schedule1.png)
 
-![Create Schedules](docs/new-schedule1.png)
+![Create Schedules](docs/new-schedule2.png)
 
 ![Show History Schedules](docs/show-history1.png)
 

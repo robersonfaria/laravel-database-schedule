@@ -20,7 +20,7 @@
                         @foreach($schedule->params as $param => $value)
                             <tr>
                                 <td>{{ $param }}</td>
-                                <td>{{ $value }}</td>
+                                <td>{{ $value['value'] }}</td>
                             </tr>
                         @endforeach
                         </table>
@@ -42,7 +42,7 @@
                                     <td class="col-2">{{ $history->command }}</td>
                                     <td class="col-8">
                                         @foreach($history->params as $param => $value)
-                                            {{ $param }}: {{ $value }}<br>
+                                            {{ $param }}: {{ $value['value'] }}<br>
                                         @endforeach
                                     </td>
                                     <td class="col-2">{{ $history->created_at }}</td>

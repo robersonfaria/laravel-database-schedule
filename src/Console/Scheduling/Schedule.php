@@ -25,7 +25,7 @@ class Schedule extends BaseSchedule
              * @var Event
              */
             $event = $this
-                ->command($schedule->command, [$schedule->params] ?? [])
+                ->command($schedule->command, $schedule->mapParams() ?? [])
                 ->cron($schedule->expression);
 
             if ($schedule->even_in_maintenance_mode) {

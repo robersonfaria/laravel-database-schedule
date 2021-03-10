@@ -59,7 +59,21 @@ class Schedule extends Model
         return $this->hasMany(ScheduleHistory::class, 'schedule_id', 'id');
     }
 
-    public function scopeActive($query){
+    public function scopeActive($query)
+    {
         return $query->where('status', true);
+    }
+
+    public function mapParams()
+    {
+        return [
+            array_map(function ($item) {
+                if ($item['type'] === 'function') {
+                    return eval("return ${item['value']}");
+                }
+                settype($item['value'], $item['type']);
+                return $item['value'];
+            }, $this->params)
+        ];
     }
 }

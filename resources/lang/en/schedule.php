@@ -19,7 +19,8 @@ return [
         'email_output' => 'Email for sending output',
         'sendmail_error' => 'Send email in case of failure to execute the command',
         'status' => 'Status',
-        'actions' => 'Actions'
+        'actions' => 'Actions',
+        'data-type' => 'Data type'
     ],
     'messages' => [
         'no-records-found' => 'No records found.',
@@ -27,7 +28,8 @@ return [
         'save-error' => 'Error saving data.',
         'timezone' => 'All schedules will be executed in the timezone: ',
         'select' => 'Select a command',
-        'help-cron-expression' => 'If necessary click here and use a tool to facilitate the creation of the cron expression'
+        'help-cron-expression' => 'If necessary click here and use a tool to facilitate the creation of the cron expression',
+        'attention-type-function' => "ATTENTION: parameters of the type 'function' are executed before the execution of the scheduling and its return is passed as parameter. Use with care, it can break your job"
     ],
     'status' => [
         'active' => 'Active',
