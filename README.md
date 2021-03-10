@@ -47,6 +47,75 @@ protected function gate()
 }
 ```
 
+### Scheduled Task Example
+
+Create the command for your scheduled task `app/Console/Commands/test.php`:
+
+```php
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+
+class test extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'command:test {user} {initialDate} {finalDate}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        $this->info('Hello ' . $this->argument('user'));
+        $this->info("Initial Date: " . $this->argument('initialDate'));
+        $this->info("Final Date: " . $this->argument('finalDate'));
+        return 0;
+    }
+}
+```
+
+Access the dashboard and the command will be listed for scheduling, create a schedule like the example below:
+![Create Schedule](docs/new-schedule2.png)
+
+Run the artisan command to run scheduled tasks
+```bash
+php artisan schedule:run
+```
+
+The console output will look like this
+```bash
+Running scheduled command: '/usr/bin/php7.2' 'artisan' command:test '1' '2021-02-10 00:00:00' '2021-04-10 00:00:00' > 'path/to/storage/logs/schedule-dcccb62f29f754dc83a86a3d0b59afb00a08fdb3.log' 2>&1
+```
+
+If you marked the sending of the output by email you will receive an email similar to this one:
+
+![Mail Output](docs/mail-output.png)
+
 ## Credits
 
 * That library was inspired by the library [therezor/laravel-database-schedule](https://github.com/therezor/laravel-database-schedule)
