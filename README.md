@@ -4,11 +4,11 @@ This librarian creates a route(default: /schedule) in your application where it 
 schedules will be executed at any given moment, these schedules are recorded in the database and can be changed, 
 activated, inactivated or deleted via the interface without the need for a new application deployment.
 
-![List Schedules](docs/list-schedule.png)
+![List Schedules](docs/list-schedule1.png)
 
-![Create Schedules](docs/new-schedule.png)
+![Create Schedules](docs/new-schedule1.png)
 
-![Show History Schedules](docs/show-history.png)
+![Show History Schedules](docs/show-history1.png)
 
 ## Installation
 
