@@ -60,7 +60,10 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        //
+        $schedule->load('histories');
+
+        return view('schedule::show')
+            ->with(compact('schedule'));
     }
 
     /**

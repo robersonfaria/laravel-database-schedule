@@ -7,7 +7,7 @@
             @method('PUT')
             @csrf
             <div class="card">
-                <div class="card-header">{{ trans('schedule::schedule.titles.create') }}</div>
+                <div class="card-header">{{ trans('schedule::schedule.titles.edit') }}</div>
                 <div class="card-body">
                     @include('schedule::form')
                 </div>

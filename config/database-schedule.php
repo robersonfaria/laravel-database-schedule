@@ -7,7 +7,10 @@ return [
     /**
      *  Table and Model used for schedule list
      */
-    'table' => 'schedule',
+    'table' => [
+        'schedules' => 'schedules',
+        'schedule_histories' => 'schedule_histories'
+    ],
     'model' => Schedule::class,
     'timezone' => env('SCHEDULE_TIMEZONE', config('app.timezone')),
 

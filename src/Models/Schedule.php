@@ -51,7 +51,12 @@ class Schedule extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = Config::get('database-schedule.table', 'schedule');
+        $this->table = Config::get('database-schedule.table.schedules', 'schedules');
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(ScheduleHistory::class, 'schedule_id', 'id');
     }
 
     public function scopeActive($query){

@@ -2,8 +2,10 @@
 
 namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule as BaseSchedule;
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
+use RobersonFaria\DatabaseSchedule\Models\ScheduleHistory;
 
 class Schedule extends BaseSchedule
 {
@@ -19,7 +21,12 @@ class Schedule extends BaseSchedule
 
         foreach ($schedules as $schedule) {
 
-            $event = $this->command($schedule->command, [$schedule->params] ?? [])->cron($schedule->expression);
+            /**
+             * @var Event
+             */
+            $event = $this
+                ->command($schedule->command, [$schedule->params] ?? [])
+                ->cron($schedule->expression);
 
             if ($schedule->even_in_maintenance_mode) {
                 $event->evenInMaintenanceMode();
@@ -48,6 +55,14 @@ class Schedule extends BaseSchedule
             if(!empty($schedule->on_one_server)) {
                 $event->onOneServer();
             }
+
+            $event->after(function () use ($schedule, $event) {
+                $schedule->histories()->create([
+                    'command' => $schedule->command,
+                    'params' => $schedule->params,
+                    'output' => file_get_contents($event->output)
+                ]);
+            });
         }
 
         return parent::dueEvents($app);

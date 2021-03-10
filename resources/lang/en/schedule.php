@@ -2,12 +2,15 @@
 return [
     'titles' => [
         'list' => 'Schedule List',
-        'create' => 'Create new schedule'
+        'create' => 'Create new schedule',
+        'edit' => 'Edit schedule',
+        'show' => 'Show run history'
     ],
     'fields' => [
         'command' => 'Command',
         'params' => 'Parameters',
         'expression' => 'Cron Expression',
+        'output' => 'Output',
         'even_in_maintenance_mode' => 'Even in maintenance mode',
         'without_overlapping' => 'Without overlapping',
         'on_one_server' => 'Execute scheduling only on one server',
@@ -38,5 +41,6 @@ return [
         'inactivate' => 'Inactivate',
         'activate' => 'Activate',
         'delete' => 'Delete',
+        'history' => 'History',
     ]
 ];

@@ -13,7 +13,7 @@
                         <th class="text-center">{{ trans('schedule::schedule.fields.params') }}</th>
                         <th class="text-center">{{ trans('schedule::schedule.fields.expression') }}</th>
                         <th class="text-center">{{ trans('schedule::schedule.fields.status') }}</th>
-                        <th class="text-center" width="200">{{ trans('schedule::schedule.fields.actions') }}</th>
+                        <th class="text-center" width="270">{{ trans('schedule::schedule.fields.actions') }}</th>
                     </tr>
                     @forelse($schedules as $schedule)
                         <tr>
@@ -28,6 +28,10 @@
                                 {{ $schedule->status ? trans('schedule::schedule.status.active') : trans('schedule::schedule.status.inactive') }}
                             </td>
                             <td class="text-center">
+                                <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@show', $schedule) }}"
+                                   class="btn btn-sm btn-info">
+                                    {{ trans('schedule::schedule.buttons.history') }}
+                                </a>
                                 @if($schedule->status)
                                     <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@edit', $schedule) }}"
                                        class="btn btn-sm btn-primary">

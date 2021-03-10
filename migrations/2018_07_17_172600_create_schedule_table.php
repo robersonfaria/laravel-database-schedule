@@ -13,7 +13,7 @@ class CreateScheduleTable extends Migration
      */
     public function up()
     {
-        Schema::create(Config::get('database-schedule.table', 'schedule'), function (Blueprint $table) {
+        Schema::create(Config::get('database-schedule.table.schedule', 'schedules'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('command');
             $table->text('params')->nullable();

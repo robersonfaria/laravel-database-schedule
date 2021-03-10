@@ -8,6 +8,8 @@ activated, inactivated or deleted via the interface without the need for a new a
 
 ![Create Schedules](docs/new-schedule.png)
 
+![Show History Schedules](docs/show-history.png)
+
 ## Installation
 
 1. Run ```composer require robersonfaria/laravel-database-schedule```
