@@ -20,7 +20,8 @@ return [
         'sendmail_error' => 'Send email in case of failure to execute the command',
         'status' => 'Status',
         'actions' => 'Actions',
-        'data-type' => 'Data type'
+        'data-type' => 'Data type',
+        'run_in_background' => 'Run in background'
     ],
     'messages' => [
         'no-records-found' => 'No records found.',

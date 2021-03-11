@@ -36,6 +36,10 @@ class Schedule extends BaseSchedule
                 $event->withoutOverlapping();
             }
 
+            if ($schedule->run_in_background) {
+                $event->runInBackground();
+            }
+
             if(!empty($schedule->webhook_before)) {
                 $event->pingBefore($schedule->webhook_before);
             }

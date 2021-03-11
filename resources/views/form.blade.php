@@ -133,7 +133,6 @@
         @enderror
     </div>
 
-
     <div class="form-check">
         <input type="checkbox" class="form-check-input @error('on_one_server') is-invalid @enderror"
                name="on_one_server"
@@ -143,6 +142,19 @@
         <label class="form-check-label"
                for="on_one_server">{{ trans('schedule::schedule.fields.on_one_server') }}</label>
         @error('on_one_server')
+        <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input @error('run_in_background') is-invalid @enderror"
+               name="run_in_background"
+               id="run_in_background"
+               value="1"
+                {{ old('run_in_background', $schedule->run_in_background ?? '') == 1 ? 'checked' : '' }}>
+        <label class="form-check-label"
+               for="run_in_background">{{ trans('schedule::schedule.fields.run_in_background') }}</label>
+        @error('run_in_background')
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>

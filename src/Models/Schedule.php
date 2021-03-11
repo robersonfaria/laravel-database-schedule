@@ -29,7 +29,8 @@ class Schedule extends Model
         'webhook_after',
         'email_output',
         'sendmail_error',
-        'status'
+        'status',
+        'run_in_background'
     ];
 
     protected $attributes = [
