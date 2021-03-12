@@ -67,6 +67,7 @@ class Schedule extends BaseSchedule
                     'output' => file_get_contents($event->output)
                 ]);
             });
+            unset($event);
         }
 
         return parent::dueEvents($app);
