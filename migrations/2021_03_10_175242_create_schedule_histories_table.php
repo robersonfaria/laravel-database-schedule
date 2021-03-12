@@ -15,7 +15,7 @@ class CreateScheduleHistoriesTable extends Migration
     public function up()
     {
         Schema::create(Config::get('database-schedule.table.schedule_histories', 'schedule_histories'), function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->unsignedBigInteger('schedule_id');
             $table->string('command');
             $table->text('params')->nullable();
