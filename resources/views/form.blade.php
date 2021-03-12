@@ -36,7 +36,7 @@
                     </div>
                     <div class="col-4">
                         <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
-                        <select :name="'params['+argument.name+'][type]'" v-model="requests[argument.name].type" class="form-control">
+                        <select :name="'params['+argument.name+'][type]'" :value="getRequestType(argument.name)" class="form-control">
                             <option value="string">String</option>
                             <option value="function">Function</option>
                         </select>
@@ -166,7 +166,7 @@
         el: '#app-form',
         data: {
             commands: @json($commandService->get()),
-            requests: @json($schedule->params ?? old('params')),
+            requests: @json($schedule->params ?? old('params') ?? []),
             form: {
                 command: '{{ old('command', $schedule->command ?? '') }}',
                 params: []
@@ -176,6 +176,12 @@
             getRequest: function (command) {
                 if(this.requests !== null && this.requests[command] !== undefined) {
                     return this.requests[command].value;
+                }
+                return '';
+            },
+            getRequestType: function (command) {
+                if(this.requests !== null && this.requests[command] !== undefined) {
+                    return this.requests[command].type;
                 }
                 return '';
             }
