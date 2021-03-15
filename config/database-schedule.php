@@ -19,7 +19,7 @@ return [
      * Cache settings
      */
     'cache' => [
-        'store' => env('SCHEDULE_CACHE_DRIVER', !config('app.debug')),
+        'store' => env('SCHEDULE_CACHE_DRIVER', 'file'),
         'key' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_schedule_'),
         'enabled' => env('SCHEDULE_CACHE_ENABLE', !config('app.debug')),
     ],
