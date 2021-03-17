@@ -20,6 +20,7 @@ class Schedule extends Model
 
     protected $fillable = [
         'command',
+        'command_custom',
         'params',
         'expression',
         'even_in_maintenance_mode',

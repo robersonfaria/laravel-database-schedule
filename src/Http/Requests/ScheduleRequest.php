@@ -25,6 +25,7 @@ class ScheduleRequest extends FormRequest
     {
         return [
             'command' => 'required',
+            'command_custom' => 'nullable|string|required_if:command,custom',
             'expression' => "required|cron",
             'webhook_before' => 'nullable|url',
             'webhook_after' => 'nullable|url',

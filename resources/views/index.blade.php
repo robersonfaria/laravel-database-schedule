@@ -17,7 +17,7 @@
                     </tr>
                     @forelse($schedules as $schedule)
                         <tr>
-                            <td>{{ $schedule->command }}</td>
+                            <td>{{ $schedule->command }}@if ($schedule->command == 'custom'): {{ $schedule->command_custom }} @endif</td>
                             <td>
                                 @foreach($schedule->params as $param => $value)
                                     {{ $param }}: {{ $value['value'] }}<br>

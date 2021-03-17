@@ -47,6 +47,22 @@
         <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
     </div>
 
+    <div v-if="form.command == 'custom'" class="form-group">
+        <div class="row">
+            <div class="col-12">
+                <input
+                   type="text"
+                   placeholder="{{ trans('schedule::schedule.messages.custom-command-here')}}"
+                   name="command_custom"
+                   v-model="form.command_custom"
+                   class="form-control @error('command_custom') is-invalid @enderror"
+            />
+            @error('command_custom')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+
     <div class="form-group">
         <label>{{ trans('schedule::schedule.fields.expression') }}</label>
         <input type="text" class="form-control @error('expression') is-invalid @enderror" name="expression"
@@ -169,6 +185,7 @@
             requests: @json($schedule->params ?? old('params') ?? []),
             form: {
                 command: '{{ old('command', $schedule->command ?? '') }}',
+		'command_custom': '{{ old('command_custom', $schedule->command_custom ?? '') }}',
                 params: []
             }
         },

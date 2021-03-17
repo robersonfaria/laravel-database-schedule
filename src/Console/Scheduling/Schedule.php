@@ -24,10 +24,17 @@ class Schedule extends BaseSchedule
             /**
              * @var Event
              */
-            $event = $this
-                ->command($schedule->command, $schedule->mapParams() ?? [])
-                ->name(md5($schedule->command . json_encode($schedule->mapParams() ?? [])))
-                ->cron($schedule->expression);
+            if ($schedule->command === 'custom') {
+                $event = $this
+                    ->exec($schedule->command_custom)
+                    ->name(md5($schedule->command . json_encode($schedule->mapParams() ?? [])))
+                    ->cron($schedule->expression);
+            } else {
+                $event = $this
+                    ->command($schedule->command, $schedule->mapParams() ?? [])
+                    ->name(md5($schedule->command . json_encode($schedule->mapParams() ?? [])))
+                    ->cron($schedule->expression);
+            }
 
             if ($schedule->even_in_maintenance_mode) {
                 $event->evenInMaintenanceMode();
