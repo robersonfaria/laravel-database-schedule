@@ -22,6 +22,7 @@ class Schedule extends Model
         'command',
         'command_custom',
         'params',
+        'options',
         'expression',
         'even_in_maintenance_mode',
         'without_overlapping',
@@ -37,10 +38,12 @@ class Schedule extends Model
     protected $attributes = [
         'expression' => '* * * * *',
         'params' => '{}',
+        'options' => '{}',
     ];
 
     protected $casts = [
         'params' => 'array',
+        'options' => 'array',
     ];
 
     /**
@@ -66,7 +69,7 @@ class Schedule extends Model
         return $query->where('status', true);
     }
 
-    public function mapParams()
+    public function mapArguments()
     {
         return [
             array_map(function ($item) {
@@ -75,7 +78,23 @@ class Schedule extends Model
                 }
                 settype($item['value'], $item['type']);
                 return $item['value'];
-            }, $this->params)
+            }, $this->params ?? [])
         ];
+    }
+
+    public function mapOptions()
+    {
+        $str = '';
+        if (isset($this->options) && count($this->options) > 0) {
+            foreach ($this->options as $name => $option) {
+                if ($option['type'] === 'function') {
+                    $option['value'] = eval("return ${$option['value']}");
+                } else {
+                    settype($option['value'], $option['type']);
+                }
+                $str .= ' --' . $name . '=' . $option['value'];
+            }
+        }
+        return $str;
     }
 }

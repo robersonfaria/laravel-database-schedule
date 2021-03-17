@@ -37,7 +37,8 @@ class ScheduleRequest extends FormRequest
     {
         return [
             'command' => strtolower(trans('schedule::schedule.fields.command')),
-            'params' => strtolower(trans('schedule::schedule.fields.params')),
+            'arguments' => strtolower(trans('schedule::schedule.fields.arguments')),
+            'options' => strtolower(trans('schedule::schedule.fields.options')),
             'expression' => strtolower(trans('schedule::schedule.fields.expression'))
         ];
     }

@@ -33,6 +33,6 @@ class CreateScheduleHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedule_histories');
+        Schema::dropIfExists(Config::get('database-schedule.table.schedule_histories', 'schedule_histories'));
     }
 }

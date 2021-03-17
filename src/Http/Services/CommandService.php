@@ -3,6 +3,7 @@
 namespace RobersonFaria\DatabaseSchedule\Http\Services;
 
 use App\Console\Kernel;
+use Symfony\Component\Console\Input\InputArgument;
 
 class CommandService
 {
@@ -14,7 +15,6 @@ class CommandService
         foreach (config('database-schedule.commands.exclude') as $exclude) {
             $commandsKeys = preg_grep("/^$exclude/", $commandsKeys, PREG_GREP_INVERT);
         }
-//        return $commands->only($commandsKeys);
         return $commands->only($commandsKeys)
             ->map(function ($command) {
                 return (object)[
@@ -29,7 +29,16 @@ class CommandService
                                 'required' => $argument->isRequired()
                             ];
                         }, $command->getDefinition()->getArguments())
-                    )
+                    ),
+                    'options' => array_values(
+                        array_map(function ($argument) {
+                            return (object)[
+                                'name' => $argument->getName(),
+                                'default' => $argument->getDefault(),
+                                'required' => $argument->isValueRequired()
+                            ];
+                        }, $command->getDefinition()->getOptions())
+                    ),
                 ];
             });
     }

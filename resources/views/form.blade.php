@@ -25,18 +25,43 @@
     <div id="parameters" class="ml-3" v-if="commands[form.command] !== undefined && commands[form.command].arguments.length > 0">
         <div class="row">
             <div class="col-12">
-                <label>Parameters:</label>
+                <label>{{ trans('schedule::schedule.fields.arguments') }}:</label>
                 <div id="div_params" class="ml-5 row" v-for="argument in commands[form.command].arguments" :key="argument.name">
                     <div class="col-8">
                         <label>@{{ argument.name }}</label>
                         <input type="text" class="form-control" :name="'params['+argument.name+'][value]'"
                                :id="argument.name"
-                               :value="getRequest(argument.name)"
+                               :value="getArguments(argument.name)"
                                :required="argument.required">
                     </div>
                     <div class="col-4">
                         <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
-                        <select :name="'params['+argument.name+'][type]'" :value="getRequestType(argument.name)" class="form-control">
+                        <select :name="'params['+argument.name+'][type]'" :value="getArgumentsType(argument.name)" class="form-control">
+                            <option value="string">String</option>
+                            <option value="function">Function</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
+    </div>
+
+    <div id="parameters" class="ml-3" v-if="commands[form.command] !== undefined && commands[form.command].options.length > 0">
+        <div class="row">
+            <div class="col-12">
+                <label>{{ trans('schedule::schedule.fields.options') }}:</label>
+                <div id="div_params" class="ml-5 row" v-for="option in commands[form.command].options" :key="option.name">
+                    <div class="col-8">
+                        <label>@{{ option.name }}</label>
+                        <input type="text" class="form-control" :name="'options['+option.name+'][value]'"
+                               :id="option.name"
+                               :value="getOptions(option.name)"
+                               :required="option.required">
+                    </div>
+                    <div class="col-4">
+                        <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
+                        <select :name="'options['+option.name+'][type]'" :value="getOptionsType(option.name)" class="form-control">
                             <option value="string">String</option>
                             <option value="function">Function</option>
                         </select>
@@ -182,7 +207,10 @@
         el: '#app-form',
         data: {
             commands: @json($commandService->get()),
-            requests: @json($schedule->params ?? old('params') ?? []),
+            requests: {
+                arguments: @json(old('params') ?? $schedule->params ?? []),
+                options: @json(old('options') ?? $schedule->options ?? [])
+            },
             form: {
                 command: '{{ old('command', $schedule->command ?? '') }}',
 		'command_custom': '{{ old('command_custom', $schedule->command_custom ?? '') }}',
@@ -190,15 +218,27 @@
             }
         },
         methods: {
-            getRequest: function (command) {
-                if(this.requests !== null && this.requests[command] !== undefined) {
-                    return this.requests[command].value;
+            getArguments: function (field) {
+                if(this.requests.arguments !== null && this.requests.arguments[field] !== undefined) {
+                    return this.requests.arguments[field].value;
                 }
                 return '';
             },
-            getRequestType: function (command) {
-                if(this.requests !== null && this.requests[command] !== undefined) {
-                    return this.requests[command].type;
+            getArgumentsType: function (field) {
+                if(this.requests.arguments !== null && this.requests.arguments[field] !== undefined) {
+                    return this.requests.arguments[field].type;
+                }
+                return '';
+            },
+            getOptions: function (field) {
+                if(this.requests.options !== null && this.requests.options[field] !== undefined) {
+                    return this.requests.options[field].value;
+                }
+                return '';
+            },
+            getOptionsType: function (field) {
+                if(this.requests.options !== null && this.requests.options[field] !== undefined) {
+                    return this.requests.options[field].type;
                 }
                 return '';
             }
