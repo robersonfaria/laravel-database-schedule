@@ -11,7 +11,7 @@ class AddCustomCommand extends Migration
 	 */
 	public function up()
 	{
-		Schema::table('schedules', function (Blueprint $table) {
+		Schema::table(Config::get('database-schedule.table.schedules', 'schedules'), function (Blueprint $table) {
 			$table->string('command_custom')->after('command')->nullable()->default(null);
 		});
 	}
@@ -21,7 +21,7 @@ class AddCustomCommand extends Migration
 	 */
 	public function down()
 	{
-		Schema::table('schedules', function (Blueprint $table) {
+		Schema::table(Config::get('database-schedule.table.schedules', 'schedules'), function (Blueprint $table) {
 			$table->dropColumn('command_custom');
 		});
 	}

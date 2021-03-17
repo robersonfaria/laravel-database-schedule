@@ -30,8 +30,8 @@ return [
         'save-error' => 'Error saving data.',
         'timezone' => 'All schedules will be executed in the timezone: ',
         'select' => 'Select a command',
-	'custom' => 'Custom Command',
-    │   'custom-command-here' => 'Custom Command here (e.g. `cat /proc/cpuinfo` or `artisan db:migrate`)',
+        'custom' => 'Custom Command',
+        'custom-command-here' => 'Custom Command here (e.g. `cat /proc/cpuinfo` or `artisan db:migrate`)',
         'help-cron-expression' => 'If necessary click here and use a tool to facilitate the creation of the cron expression',
         'attention-type-function' => "ATTENTION: parameters of the type 'function' are executed before the execution of the scheduling and its return is passed as parameter. Use with care, it can break your job"
     ],

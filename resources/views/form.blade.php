@@ -13,6 +13,7 @@
                     {{ $command->signature }} - {{ $command->description }}
                 </option>
             @endforeach
+            <option value="custom"> {{ trans('schedule::schedule.messages.custom') }} </option>
         </select>
         @error('command')
         <div class="invalid-feedback">{{ $message }}</div>
@@ -213,7 +214,7 @@
             },
             form: {
                 command: '{{ old('command', $schedule->command ?? '') }}',
-		'command_custom': '{{ old('command_custom', $schedule->command_custom ?? '') }}',
+                'command_custom': '{{ old('command_custom', $schedule->command_custom ?? '') }}',
                 params: []
             }
         },
