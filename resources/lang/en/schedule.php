@@ -8,7 +8,8 @@ return [
     ],
     'fields' => [
         'command' => 'Command',
-        'params' => 'Parameters',
+        'arguments' => 'Arguments',
+        'options' => 'Options',
         'expression' => 'Cron Expression',
         'output' => 'Output',
         'even_in_maintenance_mode' => 'Even in maintenance mode',

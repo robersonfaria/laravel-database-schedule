@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 
 class CreateScheduleTable extends Migration
 {
@@ -13,7 +14,7 @@ class CreateScheduleTable extends Migration
      */
     public function up()
     {
-        Schema::create(Config::get('database-schedule.table.schedule', 'schedules'), function (Blueprint $table) {
+        Schema::create(Config::get('database-schedule.table.schedules', 'schedules'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('command');
             $table->text('params')->nullable();
@@ -41,6 +42,6 @@ class CreateScheduleTable extends Migration
      */
     public function down()
     {
-        Schema::drop(Config::get('database-schedule.table', 'schedule'));
+        Schema::dropIfExists(Config::get('database-schedule.table.schedules', 'schedules'));
     }
 }

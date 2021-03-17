@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRunInBackgroundTableSchedule extends Migration
+class AddOptionsFieldSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddRunInBackgroundTableSchedule extends Migration
     public function up()
     {
         Schema::table(Config::get('database-schedule.table.schedules', 'schedules'), function (Blueprint $table) {
-            $table->boolean('run_in_background')->after('status')->default(false);
+            $table->text('options')->after('expression')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddRunInBackgroundTableSchedule extends Migration
     public function down()
     {
         Schema::table(Config::get('database-schedule.table.schedules', 'schedules'), function (Blueprint $table) {
-            $table->dropColumn('run_in_background');
+            $table->dropColumn('options');
         });
     }
 }

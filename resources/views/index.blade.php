@@ -10,7 +10,8 @@
                     <thead>
                     <tr>
                         <th class="text-center">{{ trans('schedule::schedule.fields.command') }}</th>
-                        <th class="text-center">{{ trans('schedule::schedule.fields.params') }}</th>
+                        <th class="text-center">{{ trans('schedule::schedule.fields.arguments') }}</th>
+                        <th class="text-center">{{ trans('schedule::schedule.fields.options') }}</th>
                         <th class="text-center">{{ trans('schedule::schedule.fields.expression') }}</th>
                         <th class="text-center">{{ trans('schedule::schedule.fields.status') }}</th>
                         <th class="text-center" width="270">{{ trans('schedule::schedule.fields.actions') }}</th>
@@ -19,9 +20,18 @@
                         <tr>
                             <td>{{ $schedule->command }}</td>
                             <td>
-                                @foreach($schedule->params as $param => $value)
-                                    {{ $param }}: {{ $value['value'] }}<br>
-                                @endforeach
+                                @if(isset($schedule->params))
+                                    @foreach($schedule->params as $param => $value)
+                                        {{ $param }}: {{ $value['value'] }}<br>
+                                    @endforeach
+                                @endif
+                            </td>
+                            <td>
+                                @if(isset($schedule->options))
+                                    @foreach($schedule->options as $param => $value)
+                                        {{ $param }}: {{ $value['value'] }}<br>
+                                    @endforeach
+                                @endif
                             </td>
                             <td>{{ $schedule->expression }}</td>
                             <td class="{{ $schedule->status ? 'text-success' : 'text-secondary' }}">
@@ -62,7 +72,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">
+                            <td colspan="6" class="text-center">
                                 {{ trans('schedule::schedule.messages.no-records-found') }}
                             </td>
                         </tr>

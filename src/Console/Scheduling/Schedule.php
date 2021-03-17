@@ -21,12 +21,16 @@ class Schedule extends BaseSchedule
 
         foreach ($schedules as $schedule) {
 
+            $command = $schedule->command;
+
+            $options = $schedule->mapOptions();
+
             /**
              * @var Event
              */
             $event = $this
-                ->command($schedule->command, $schedule->mapParams() ?? [])
-                ->name(md5($schedule->command . json_encode($schedule->mapParams() ?? [])))
+                ->command($command . $options, $schedule->mapArguments() ?? [])
+                ->name(md5($command . $options . json_encode($schedule->mapArguments() ?? [])))
                 ->cron($schedule->expression);
 
             if ($schedule->even_in_maintenance_mode) {
@@ -41,23 +45,23 @@ class Schedule extends BaseSchedule
                 $event->runInBackground();
             }
 
-            if(!empty($schedule->webhook_before)) {
+            if (!empty($schedule->webhook_before)) {
                 $event->pingBefore($schedule->webhook_before);
             }
 
-            if(!empty($schedule->webhook_after)) {
+            if (!empty($schedule->webhook_after)) {
                 $event->thenPing($schedule->webhook_after);
             }
 
-            if(!empty($schedule->email_output)) {
+            if (!empty($schedule->email_output)) {
                 $event->emailOutputTo($schedule->email_output);
 
-                if($schedule->sendmail_error) {
+                if ($schedule->sendmail_error) {
                     $event->emailOutputOnFailure($schedule->email_output);
                 }
             }
 
-            if(!empty($schedule->on_one_server)) {
+            if (!empty($schedule->on_one_server)) {
                 $event->onOneServer();
             }
 
@@ -65,6 +69,7 @@ class Schedule extends BaseSchedule
                 $schedule->histories()->create([
                     'command' => $schedule->command,
                     'params' => $schedule->params,
+                    'options' => $schedule->options,
                     'output' => file_get_contents($event->output)
                 ]);
             });
