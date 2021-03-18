@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class CommandService
 {
-
     public function get()
     {
         $commands = collect(app(Kernel::class)->all());

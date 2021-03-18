@@ -7,7 +7,6 @@ use RobersonFaria\DatabaseSchedule\Models\Schedule;
 
 class ScheduleObserver
 {
-
     public function created()
     {
         $scheduleService = app(ScheduleService::class);
@@ -31,5 +30,4 @@ class ScheduleObserver
         $scheduleService = app(ScheduleService::class);
         $scheduleService->clearCache();
     }
-
 }
