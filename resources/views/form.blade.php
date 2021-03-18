@@ -8,18 +8,18 @@
                 class="form-control @error('command') is-invalid @enderror"
                 @if(isset($schedule) && $schedule->command) disabled @endif>
             <option value="">{{ trans('schedule::schedule.messages.select') }}</option>
+            <option value="custom">{{ trans('schedule::schedule.messages.custom') }}</option>
             @foreach($commandService->get() as $command)
                 <option value="{{ $command->name }}">
                     {{ $command->signature }} - {{ $command->description }}
                 </option>
             @endforeach
-            <option value="custom"> {{ trans('schedule::schedule.messages.custom') }} </option>
         </select>
         @error('command')
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror
         @if(isset($schedule) && $schedule->command)
-            <input type="hidden" name="command" value="{{ $schedule->command }}">
+            <input type="hidden" name="command" value="{{ $schedule->command }}"/>
         @endif
     </div>
 
@@ -73,7 +73,7 @@
         <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
     </div>
 
-    <div v-if="form.command == 'custom'" class="form-group">
+    <div v-if="form.command === 'custom'" class="form-group">
         <div class="row">
             <div class="col-12">
                 <input
@@ -81,11 +81,11 @@
                    placeholder="{{ trans('schedule::schedule.messages.custom-command-here')}}"
                    name="command_custom"
                    v-model="form.command_custom"
-                   class="form-control @error('command_custom') is-invalid @enderror"
-            />
-            @error('command_custom')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+                   class="form-control @error('command_custom') is-invalid @enderror"/>
+                @error('command_custom')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
         </div>
     </div>
 

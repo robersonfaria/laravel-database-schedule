@@ -21,8 +21,8 @@ class Schedule extends BaseSchedule
 
         foreach ($schedules as $schedule) {
             // @var Event $event
-            if ($command === 'custom') {
-                $command = $schedule->command_custom
+            if ($schedule->command === 'custom') {
+                $command = $schedule->command_custom;
                 $event = $this->exec($command);
             } else {
                 $command = $schedule->command . $schedule->mapOptions();
@@ -64,7 +64,7 @@ class Schedule extends BaseSchedule
                 $event->onOneServer();
             }
 
-            $event->after(function () use ($schedule, $event) {
+            $event->after(function () use ($schedule, $event, $command) {
                 $schedule->histories()->create([
                     'command' => $command,
                     'params' => $schedule->params,
