@@ -3,7 +3,6 @@
 
 namespace RobersonFaria\DatabaseSchedule\Http\Services;
 
-
 class ScheduleService
 {
     private $model;

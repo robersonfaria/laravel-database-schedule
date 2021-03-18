@@ -76,7 +76,8 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/database-schedule.php', 'database-schedule'
+            __DIR__ . '/../config/database-schedule.php',
+            'database-schedule'
         );
     }
 

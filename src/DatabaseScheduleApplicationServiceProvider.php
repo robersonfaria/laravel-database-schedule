@@ -2,13 +2,11 @@
 
 namespace RobersonFaria\DatabaseSchedule;
 
-
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class DatabaseScheduleApplicationServiceProvider extends ServiceProvider
 {
-
     public function boot()
     {
         $this->authorization();
