@@ -28,6 +28,9 @@ class Schedule extends BaseSchedule
                 $command = $schedule->command . $schedule->mapOptions();
                 $event = $this->command($command, $schedule->mapArguments() ?? []);
             }
+            
+            $event->name(md5($command . json_encode($schedule->mapArguments() ?? [])))
+                ->cron($schedule->expression);
 
             if ($schedule->even_in_maintenance_mode) {
                 $event->evenInMaintenanceMode();
