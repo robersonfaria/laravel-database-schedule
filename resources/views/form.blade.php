@@ -13,6 +13,7 @@
                     {{ $command->signature }} - {{ $command->description }}
                 </option>
             @endforeach
+            <option value="custom"> {{ trans('schedule::schedule.messages.custom') }} </option>
         </select>
         @error('command')
         <div class="invalid-feedback">{{ $message }}</div>
@@ -70,6 +71,22 @@
             </div>
         </div>
         <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
+    </div>
+
+    <div v-if="form.command == 'custom'" class="form-group">
+        <div class="row">
+            <div class="col-12">
+                <input
+                   type="text"
+                   placeholder="{{ trans('schedule::schedule.messages.custom-command-here')}}"
+                   name="command_custom"
+                   v-model="form.command_custom"
+                   class="form-control @error('command_custom') is-invalid @enderror"
+            />
+            @error('command_custom')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
     </div>
 
     <div class="form-group">
@@ -197,6 +214,7 @@
             },
             form: {
                 command: '{{ old('command', $schedule->command ?? '') }}',
+                'command_custom': '{{ old('command_custom', $schedule->command_custom ?? '') }}',
                 params: []
             }
         },
