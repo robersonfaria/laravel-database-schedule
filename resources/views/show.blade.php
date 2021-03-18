@@ -11,7 +11,6 @@
                     <div class="col-10">{{ $schedule->command }}</div>
 
                     <div class="col-2">{{ trans('schedule::schedule.fields.arguments') }}:</div>
-                    <div class="col-2">{{ trans('schedule::schedule.fields.options') }}:</div>
                     <div class="col-10">
                         <table class="table table-sm table-bordered">
                             <tr>
@@ -28,6 +27,7 @@
                             @endif
                         </table>
                     </div>
+                    <div class="col-2">{{ trans('schedule::schedule.fields.options') }}:</div>
                     <div class="col-10">
                         <table class="table table-sm table-bordered">
                             <tr>
@@ -51,8 +51,8 @@
                             <thead>
                             <tr class="d-flex">
                                 <th class="col-2">{{ trans('schedule::schedule.fields.command') }}</th>
-                                <th class="col-4">{{ trans('schedule::schedule.fields.params.arguments') }}</th>
-                                <th class="col-4">{{ trans('schedule::schedule.fields.params.options') }}</th>
+                                <th class="col-4">{{ trans('schedule::schedule.fields.arguments') }}</th>
+                                <th class="col-4">{{ trans('schedule::schedule.fields.options') }}</th>
                                 <th class="col-2">{{ trans('schedule::schedule.fields.expression') }}</th>
                             </tr>
                             </thead>
