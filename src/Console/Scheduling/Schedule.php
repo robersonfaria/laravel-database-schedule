@@ -20,17 +20,13 @@ class Schedule extends BaseSchedule
         $schedules = $scheduleService->getActives();
 
         foreach ($schedules as $schedule) {
-
-            $command = $schedule->command;
-
-            $options = $schedule->mapOptions();
-
-            // @var Event
+            // @var Event $event
             if ($command === 'custom') {
-                $event = $this->exec($schedule->command_custom);
+                $command = $schedule->command_custom
+                $event = $this->exec($command);
             } else {
-                $options = $schedule->mapOptions();
-                $event = $this->command($command . $options, $schedule->mapArguments() ?? []);
+                $command = $schedule->command . $schedule->mapOptions();
+                $event = $this->command($command, $schedule->mapArguments() ?? []);
             }
 
             if ($schedule->even_in_maintenance_mode) {
@@ -67,7 +63,7 @@ class Schedule extends BaseSchedule
 
             $event->after(function () use ($schedule, $event) {
                 $schedule->histories()->create([
-                    'command' => $schedule->command,
+                    'command' => $command,
                     'params' => $schedule->params,
                     'options' => $schedule->options,
                     'output' => file_get_contents($event->output)
