@@ -5,6 +5,7 @@ namespace RobersonFaria\DatabaseSchedule;
 use Cron\CronExpression;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
+use RobersonFaria\DatabaseSchedule\Console\Commands\test;
 use RobersonFaria\DatabaseSchedule\Observer\ScheduleObserver;
 use Illuminate\Console\Scheduling\Schedule as BaseSchedule;
 use RobersonFaria\DatabaseSchedule\Console\Scheduling\Schedule;
@@ -55,6 +56,10 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
             return (new Schedule($this->scheduleTimezone($config)))
                 ->useCache($this->scheduleCache());
         });
+
+        $this->commands([
+            test::class
+        ]);
     }
 
     protected function registerRoutes()

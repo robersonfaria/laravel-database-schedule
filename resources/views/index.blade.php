@@ -42,11 +42,11 @@
                                    class="btn btn-sm btn-info">
                                     {{ trans('schedule::schedule.buttons.history') }}
                                 </a>
+                                <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@edit', $schedule) }}"
+                                   class="btn btn-sm btn-primary">
+                                    {{ trans('schedule::schedule.buttons.edit') }}
+                                </a>
                                 @if($schedule->status)
-                                    <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@edit', $schedule) }}"
-                                       class="btn btn-sm btn-primary">
-                                        {{ trans('schedule::schedule.buttons.edit') }}
-                                    </a>
                                     <form action="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@status', [$schedule, 'status' => 0]) }}" method="POST" class="d-inline">
                                         @csrf
                                         <button type="submit" class="btn btn-secondary btn-sm">
