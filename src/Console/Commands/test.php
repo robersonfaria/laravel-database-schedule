@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace RobersonFaria\DatabaseSchedule\Console\Commands;
 
 use Illuminate\Console\Command;
 
