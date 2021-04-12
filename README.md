@@ -36,7 +36,22 @@ php artisan vendor:publish --provider="RobersonFaria\DatabaseSchedule\DatabaseSc
 
 Dashboard Authorization exposes a dashboard at `/schedule` URI.
 
-This route is protected by the `viewDatabaseSchedule` [gate controls access](https://laravel.com/docs/8.x/authorization#gates). 
+In the configuration file it is possible to define whether to restrict access to route `/schedule`, the default is true. If access is restricted, the user must be logged in and meet the requirements defined in the `viewDatabaseSchedule` [gate controls access](https://laravel.com/docs/8.x/authorization#gates). 
+
+```php
+<?php
+return [
+    //...
+    /**
+     * If restricted_access is true, the user must be authenticated and meet the definition of `viewDatabaseSchedule` gate
+     */
+    'restricted_access' => env('SCHEDULE_RESTRICTED_ACCESS', true),
+    //...
+]
+```
+Note that this value can also be changed using the SCHEDULE_RESTRICTED_ACCESS environment variable.
+
+*ATTENTION:* if restricted_access is set to false, access to the `/ schedule` route will be public.
 
 You must define the gates in your service providers, laravel by default already brings the provider `App\Providers\AuthServiceProvider` for this purpose. See more in the Laravel documentation [https://laravel.com/docs/8.x/authorization#gates](https://laravel.com/docs/8.x/authorization#gates)
 
@@ -55,17 +70,10 @@ protected function gate()
 
 #### Exemples:
 
-I don't recommend leaving the cron configuration in public mode, but if you wish you can simply return true to your gate.
-```php
-Gate::define('viewDatabaseSchedule', function ($user) {
-     return true;
-});
-```
-
 If you want to limit access to a route to users who have a certain rule, you can do so.
 ```php
 Gate::define('viewDatabaseSchedule', function ($user) {
-     return ($user->rule === 'administrator');
+     return $user->hasRole('administrator');
 });
 ```
 

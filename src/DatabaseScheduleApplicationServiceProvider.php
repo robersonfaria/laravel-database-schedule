@@ -20,9 +20,7 @@ class DatabaseScheduleApplicationServiceProvider extends ServiceProvider
     protected function gate()
     {
         Gate::define('viewDatabaseSchedule', function ($user) {
-            return in_array($user->email, [
-                //
-            ]);
+            return false;
         });
     }
 }
