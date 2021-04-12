@@ -35,8 +35,12 @@ php artisan vendor:publish --provider="RobersonFaria\DatabaseSchedule\DatabaseSc
 ### Dashboard Authorization
 
 Dashboard Authorization exposes a dashboard at `/schedule` URI.
-This route is protected by the `viewDatabaseSchedule` gate controls access.
-You are free to modify this gate as needed to restrict access to your Database Schedule Dashboard
+
+This route is protected by the `viewDatabaseSchedule` [gate controls access](https://laravel.com/docs/8.x/authorization#gates). 
+
+You must define the gates in your service providers, laravel by default already brings the provider `App\Providers\AuthServiceProvider` for this purpose. See more in the Laravel documentation [https://laravel.com/docs/8.x/authorization#gates](https://laravel.com/docs/8.x/authorization#gates)
+
+You are free to modify this gate as needed to restrict access to your Database Schedule Dashboard.
 
 ```php
 protected function gate()
@@ -48,6 +52,24 @@ protected function gate()
     });
 }
 ```
+
+#### Exemples:
+
+I don't recommend leaving the cron configuration in public mode, but if you wish you can simply return true to your gate.
+```php
+Gate::define('viewDatabaseSchedule', function ($user) {
+     return true;
+});
+```
+
+If you want to limit access to a route to users who have a certain rule, you can do so.
+```php
+Gate::define('viewDatabaseSchedule', function ($user) {
+     return ($user->rule === 'administrator');
+});
+```
+
+Basically, if your gate has `return true` access will be allowed, if `return false` access will be restricted.
 
 ### Scheduled Task Example
 
