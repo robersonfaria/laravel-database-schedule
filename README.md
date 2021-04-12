@@ -70,7 +70,7 @@ protected function gate()
 
 #### Exemples:
 
-If you want to limit access to a route to users who have a certain rule, you can do so.
+If you want to limit access to a route to users who have a certain role, you can do so.
 ```php
 Gate::define('viewDatabaseSchedule', function ($user) {
      return $user->hasRole('administrator');
