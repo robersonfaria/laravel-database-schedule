@@ -32,6 +32,15 @@ class Schedule extends BaseSchedule
             $event->name(md5($command . json_encode($schedule->mapArguments() ?? [])))
                 ->cron($schedule->expression);
 
+            $event->after(function () use ($schedule, $event, $command) {
+                $schedule->histories()->create([
+                    'command' => $command,
+                    'params' => $schedule->params,
+                    'options' => $schedule->options,
+                    'output' => file_get_contents($event->output)
+                ]);
+            });
+
             if ($schedule->even_in_maintenance_mode) {
                 $event->evenInMaintenanceMode();
             }
@@ -64,14 +73,6 @@ class Schedule extends BaseSchedule
                 $event->onOneServer();
             }
 
-            $event->after(function () use ($schedule, $event, $command) {
-                $schedule->histories()->create([
-                    'command' => $command,
-                    'params' => $schedule->params,
-                    'options' => $schedule->options,
-                    'output' => file_get_contents($event->output)
-                ]);
-            });
             unset($event);
         }
 
