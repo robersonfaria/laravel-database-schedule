@@ -71,7 +71,7 @@ class Schedule extends Model
 
     public function mapArguments()
     {
-        return [
+        $mapedArguments = [
             array_map(function ($item) {
                 if ($item['type'] === 'function') {
                     return eval("return ${item['value']}");
@@ -80,6 +80,7 @@ class Schedule extends Model
                 return $item['value'];
             }, $this->params ?? [])
         ];
+        return array_filter($mapedArguments[0]);
     }
 
     public function mapOptions()
