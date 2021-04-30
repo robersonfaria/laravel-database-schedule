@@ -25,11 +25,11 @@ class Schedule extends BaseSchedule
                 $command = $schedule->command_custom;
                 $event = $this->exec($command);
             } else {
-                $command = $schedule->command.$schedule->mapOptions();
+                $command = $schedule->command . $schedule->mapOptions();
                 $event = $this->command($command, $schedule->mapArguments() ?? []);
             }
 
-            $event->name(md5($command.json_encode($schedule->mapArguments() ?? [])))
+            $event->name(md5($command))
                 ->cron($schedule->expression);
 
             if ($schedule->even_in_maintenance_mode) {
@@ -64,7 +64,19 @@ class Schedule extends BaseSchedule
                 $event->onOneServer();
             }
 
-            $event->before(
+            $event->after(
+                function () use ($schedule, $event, $command) {
+                    $schedule->histories()->create(
+                        [
+                            'command' => $command,
+                            'params' => $schedule->params,
+                            'options' => $schedule->options,
+                            'output' => file_get_contents($event->output)
+                        ]
+                    );
+                }
+            );
+            $event->onFailure(
                 function () use ($schedule, $event, $command) {
                     $schedule->histories()->create(
                         [
