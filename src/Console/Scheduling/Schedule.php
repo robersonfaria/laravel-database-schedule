@@ -23,13 +23,15 @@ class Schedule extends BaseSchedule
             // @var Event $event
             if ($schedule->command === 'custom') {
                 $command = $schedule->command_custom;
+                $commandMd5 = md5($command);
                 $event = $this->exec($command);
             } else {
                 $command = $schedule->command . $schedule->mapOptions();
+                $commandMd5 = md5($schedule->command . $schedule->mapOptions() . implode(",", $schedule->mapArguments() ?? []));
                 $event = $this->command($command, $schedule->mapArguments() ?? []);
             }
 
-            $event->name(md5($command))
+            $event->name(md5($commandMd5))
                 ->cron($schedule->expression);
 
             if ($schedule->even_in_maintenance_mode) {
