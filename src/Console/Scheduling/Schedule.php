@@ -27,7 +27,7 @@ class Schedule extends BaseSchedule
                 $event = $this->exec($command);
             } else {
                 $command = $schedule->command . $schedule->mapOptions();
-                $commandMd5 = md5($schedule->command . $schedule->mapOptions() . implode(",", $schedule->mapArguments() ?? []));
+                $commandMd5 = md5($schedule->command . $schedule->mapOptions() . json_encode($schedule->mapArguments() ?? []));
                 $event = $this->command($command, $schedule->mapArguments() ?? []);
             }
 
