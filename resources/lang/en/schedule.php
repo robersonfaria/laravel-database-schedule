@@ -18,6 +18,7 @@ return [
         'webhook_before' => 'URL Before',
         'webhook_after' => 'URL After',
         'email_output' => 'Email for sending output',
+        'sendmail_success' => 'Send email in case of success to execute the command',
         'sendmail_error' => 'Send email in case of failure to execute the command',
         'status' => 'Status',
         'actions' => 'Actions',

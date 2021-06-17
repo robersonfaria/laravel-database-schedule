@@ -29,7 +29,7 @@ class ScheduleRequest extends FormRequest
             'expression' => "required|cron",
             'webhook_before' => 'nullable|url',
             'webhook_after' => 'nullable|url',
-            'email_output' => 'requiredIf:sendmail_error,1|nullable|email',
+            'email_output' => 'requiredIf:sendmail_error,1|requiredIf:sendmail_success,1|nullable|email',
         ];
     }
 

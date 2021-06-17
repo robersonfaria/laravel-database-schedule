@@ -18,6 +18,7 @@ return [
         'webhook_before' => 'URL Antes',
         'webhook_after' => 'URL Após',
         'email_output' => 'Email para enviar a saída do comando',
+        'sendmail_success' => 'Enviar email em casdo de sucesso na execução do comando',
         'sendmail_error' => 'Enviar email caso ocorra falha na execução do comando',
         'status' => 'Status',
         'actions' => 'Ações',

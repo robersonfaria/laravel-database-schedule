@@ -137,6 +137,19 @@
     </div>
 
     <div class="form-check">
+        <input type="checkbox" class="form-check-input @error('sendmail_success') is-invalid @enderror"
+               name="sendmail_success"
+               id="sendmail_success"
+               value="1"
+                {{ old('sendmail_success', $schedule->sendmail_success ?? '') == 1 ? 'checked' : '' }}>
+        <label class="form-check-label"
+               for="sendmail_success">{{ trans('schedule::schedule.fields.sendmail_success') }}</label>
+        @error('sendmail_success')
+        <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="form-check">
         <input type="checkbox" class="form-check-input @error('sendmail_error') is-invalid @enderror"
                name="sendmail_error"
                id="sendmail_error"
