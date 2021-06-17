@@ -55,7 +55,9 @@ class Schedule extends BaseSchedule
             }
 
             if (!empty($schedule->email_output)) {
-                $event->emailOutputTo($schedule->email_output);
+                if ($schedule->sendmail_success) {
+                    $event->emailOutputTo($schedule->email_output);
+                }
 
                 if ($schedule->sendmail_error) {
                     $event->emailOutputOnFailure($schedule->email_output);
