@@ -72,16 +72,17 @@ class Schedule extends Model
 
     public function mapArguments()
     {
-        $mapedArguments = [
+        return [
             array_map(function ($item) {
-                if ($item['type'] === 'function') {
-                    return eval("return ${item['value']}");
+                if(!empty($item["type"])) {
+                    if (isset($item["type"]) && $item['type'] === 'function') {
+                        return eval("return ${item['value']}");
+                    }
+                    settype($item['value'], $item['type']);
+                    return $item['value'];
                 }
-                settype($item['value'], $item['type']);
-                return $item['value'];
             }, $this->params ?? [])
         ];
-        return array_filter($mapedArguments[0]);
     }
 
     public function mapOptions()
