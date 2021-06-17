@@ -54,7 +54,7 @@ class Schedule extends BaseSchedule
                 $event->thenPing($schedule->webhook_after);
             }
 
-            if (!empty($schedule->email_output)) 
+            if (!empty($schedule->email_output)) {
                 if ($schedule->sendmail_success) {
                     $event->emailOutputTo($schedule->email_output);
                 }
