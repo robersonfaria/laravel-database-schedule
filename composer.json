@@ -1,5 +1,5 @@
 {
-  "name": "local/laravel-database-schedule",
+  "name": "robersonfaria/laravel-database-schedule",
   "description": "Manage your Laravel Task Scheduling in a friendly interface and save schedules to the database.",
   "keywords": ["laravel", "schedule", "task", "jobs"],
   "license": "MIT",
