@@ -31,6 +31,7 @@ class Schedule extends Model
         'webhook_after',
         'email_output',
         'sendmail_error',
+        'sendmail_success',
         'status',
         'run_in_background'
     ];

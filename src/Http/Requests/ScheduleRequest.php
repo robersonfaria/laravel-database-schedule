@@ -33,6 +33,14 @@ class ScheduleRequest extends FormRequest
         ];
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'sendmail_success' => $this->input('sendmail_success') ?? false,
+            'sendmail_error' => $this->input('sendmail_error') ?? false
+        ]);
+    }
+
     public function attributes()
     {
         return [
