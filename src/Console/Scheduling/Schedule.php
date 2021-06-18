@@ -5,7 +5,6 @@ namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule as BaseSchedule;
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
-use RobersonFaria\DatabaseSchedule\Models\ScheduleHistory;
 
 class Schedule extends BaseSchedule
 {
@@ -23,15 +22,15 @@ class Schedule extends BaseSchedule
             // @var Event $event
             if ($schedule->command === 'custom') {
                 $command = $schedule->command_custom;
-                $commandMd5 = md5($command);
+                $commandName = $command;
                 $event = $this->exec($command);
             } else {
                 $command = $schedule->command . $schedule->mapOptions();
-                $commandMd5 = md5($schedule->command . $schedule->mapOptions() . json_encode($schedule->mapArguments() ?? []));
+                $commandName = $schedule->command . $schedule->mapOptions() . " " . $this->argumentsToString($schedule->mapArguments()[0] ?? []);
                 $event = $this->command($command, $schedule->mapArguments() ?? []);
             }
 
-            $event->name(md5($commandMd5))
+            $event->name($commandName)
                 ->cron($schedule->expression);
 
             if ($schedule->even_in_maintenance_mode) {
@@ -68,7 +67,7 @@ class Schedule extends BaseSchedule
                 $event->onOneServer();
             }
 
-            $event->after(
+            $event->onSuccess(
                 function () use ($schedule, $event, $command) {
                     $schedule->histories()->create(
                         [
@@ -96,5 +95,14 @@ class Schedule extends BaseSchedule
         }
 
         return parent::dueEvents($app);
+    }
+
+    public function argumentsToString($array)
+    {
+        $str = '';
+        foreach ($array as $key => $value) {
+            $str .= " {$key}={$value}";
+        }
+        return $str;
     }
 }

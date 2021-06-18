@@ -74,13 +74,12 @@ class Schedule extends Model
     {
         return [
             array_map(function ($item) {
-                if(!empty($item["type"])) {
-                    if (isset($item["type"]) && $item['type'] === 'function') {
-                        return eval("return ${item['value']}");
-                    }
-                    settype($item['value'], $item['type']);
-                    return $item['value'];
+                $type = $item['type'] ?? 'string';
+                if (isset($item["type"]) && $item['type'] === 'function') {
+                    return eval("return ${item['value']}");
                 }
+                settype($item['value'], ($option['type'] ?? 'string'));
+                return $item['value'];
             }, $this->params ?? [])
         ];
     }
@@ -90,10 +89,11 @@ class Schedule extends Model
         $str = '';
         if (isset($this->options) && count($this->options) > 0) {
             foreach ($this->options as $name => $option) {
-                if ($option['type'] === 'function') {
+                $type = $option['type'] ?? 'string';
+                if ($type === 'function') {
                     $option['value'] = eval("return ${$option['value']}");
                 } else {
-                    settype($option['value'], $option['type']);
+                    settype($option['value'], $type);
                 }
                 $str .= ' --' . $name . '=' . $option['value'];
             }
