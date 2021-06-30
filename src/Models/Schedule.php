@@ -72,7 +72,7 @@ class Schedule extends Model
 
     public function mapArguments()
     {
-        return [
+        $mapedArguments = [
             array_map(function ($item) {
                 $type = $item['type'] ?? 'string';
                 if (isset($item["type"]) && $item['type'] === 'function') {
@@ -82,6 +82,7 @@ class Schedule extends Model
                 return $item['value'];
             }, $this->params ?? [])
         ];
+        return array_filter($mapedArguments[0]);
     }
 
     public function mapOptions()
