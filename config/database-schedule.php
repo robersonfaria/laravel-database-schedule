@@ -14,6 +14,7 @@ return [
     'model' => Schedule::class,
     'timezone' => env('SCHEDULE_TIMEZONE', config('app.timezone')),
     'middleware' => 'web',
+    'guard' => 'web',
     /**
      * If restricted_access is true, the user must be authenticated and meet the definition of `viewDatabaseSchedule` gate
      */
@@ -32,7 +33,8 @@ return [
      * Route settings
      */
     'route' => [
-        'prefix' => 'schedule'
+        'prefix' => 'schedule',
+        'name'   => 'database-schedule'
     ],
 
     /**
