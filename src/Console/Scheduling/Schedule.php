@@ -39,6 +39,9 @@ class Schedule extends BaseSchedule
             $event->name($commandName)
                 ->cron($schedule->expression);
 
+            //ensure output is being captured to write history
+            $event->storeOutput();
+
             if ($schedule->even_in_maintenance_mode) {
                 $event->evenInMaintenanceMode();
             }
