@@ -90,15 +90,32 @@ class Schedule extends Model
         $str = '';
         if (isset($this->options) && count($this->options) > 0) {
             foreach ($this->options as $name => $option) {
-                $type = $option['type'] ?? 'string';
-                if ($type === 'function') {
-                    $option['value'] = eval("return ${$option['value']}");
-                } else {
-                    settype($option['value'], $type);
+
+                $type = $option['type'] ?? 'disabled';
+                switch ($type) {
+                    case "function":
+                        $option['value'] = eval("return ${$option['value']}");
+                        break;
+
+                    case "string":
+                        settype($option['value'], $type);
+                        break;
+
+                    case "disabled":
+                    default:
+                        break;
                 }
-                $str .= ' --' . $name . '=' . $option['value'];
+
+                if ($type !== 'disabled') {
+                    if (strlen($option['value'])) {
+                        $str .= ' --'.$name.'='.$option['value'];
+                    } else {
+                        $str .= ' --'.$name;
+                    }
+                }
             }
         }
+
         return $str;
     }
 }

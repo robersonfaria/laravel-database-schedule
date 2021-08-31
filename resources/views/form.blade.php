@@ -38,6 +38,7 @@
                     <div class="col-4">
                         <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
                         <select :name="'params['+argument.name+'][type]'" :value="getArgumentsType(argument.name)" class="form-control">
+                            <option value="disabled" selected="selected">Disabled</option>
                             <option value="string">String</option>
                             <option value="function">Function</option>
                         </select>
@@ -63,6 +64,7 @@
                     <div class="col-4">
                         <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
                         <select :name="'options['+option.name+'][type]'" :value="getOptionsType(option.name)" class="form-control">
+                            <option value="disabled" selected="selected">Disabled</option>
                             <option value="string">String</option>
                             <option value="function">Function</option>
                         </select>

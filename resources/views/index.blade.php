@@ -29,7 +29,9 @@
                             <td>
                                 @if(isset($schedule->options))
                                     @foreach($schedule->options as $param => $value)
-                                        {{ $param }}: {{ $value['value'] }}<br>
+                                        @if (!empty($value['type']) && $value['type'] !== 'disabled')
+                                            --{{ $param }}@if (strlen($value['value']))={{ $value['value'] }}@endif<br>
+                                        @endif
                                     @endforeach
                                 @endif
                             </td>
