@@ -13,7 +13,7 @@ class AddSendMailSuccessSchedulesTable extends Migration
      */
     public function up()
     {
-        Schema::table(Config::get('database-schedule.table.schedule', 'schedules'), function (Blueprint $table) {
+        Schema::table(Config::get('database-schedule.table.schedules', 'schedules'), function (Blueprint $table) {
             $table->boolean('sendmail_success')->default(false);
         });
     }
