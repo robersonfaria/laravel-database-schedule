@@ -3,6 +3,7 @@
 namespace RobersonFaria\DatabaseSchedule;
 
 use Cron\CronExpression;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use RobersonFaria\DatabaseSchedule\Console\Commands\test;
@@ -22,6 +23,8 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
         parent::boot();
 
         $this->registerRoutes();
+
+        Route::model('schedule', config('database-schedule.model'));
 
         $this->loadMigrationsFrom(__DIR__.'/../migrations');
 

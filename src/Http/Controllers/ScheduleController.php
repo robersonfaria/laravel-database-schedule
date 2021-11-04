@@ -14,7 +14,8 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $schedules = Schedule::paginate(10);
+        $schedule = app(config('database-schedule.model'));
+        $schedules = $schedule->paginate(10);
 
         return view('schedule::index')
             ->with(compact('schedules'));
@@ -39,7 +40,8 @@ class ScheduleController extends Controller
     public function store(ScheduleRequest $request)
     {
         try {
-            Schedule::create($request->all());
+            $schedule = app(config('database-schedule.model'));
+            $schedule->create($request->all());
 
             return redirect()
                 ->action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@index')
