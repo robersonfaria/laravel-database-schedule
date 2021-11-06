@@ -26,11 +26,11 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
 
         Route::model('schedule', config('database-schedule.model'));
 
-        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'schedule');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'schedule');
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'schedule');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'schedule');
 
         Validator::extend('cron', function ($attribute, $value, $parameters, $validator) {
             return CronExpression::isValidExpression($value);
@@ -45,7 +45,7 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
         ], 'translates');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/schedule'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/schedule'),
         ], 'views');
 
         $config = $this->app['config'];
@@ -55,9 +55,8 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
             $model::observe(ScheduleObserver::class);
         }
 
-        $this->app->extend(BaseSchedule::class, function () use ($config) {
-            return (new Schedule($this->scheduleTimezone($config)))
-                ->useCache($this->scheduleCache());
+        $this->app->resolving(BaseSchedule::class, function ($schedule) {
+            return app(Schedule::class, ['schedule' => $schedule]);
         });
 
         $this->commands([
@@ -72,7 +71,7 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
             'namespace' => 'RobersonFaria\DatabaseSchedule\Http\Controllers',
             'middleware' => config('database-schedule.middleware', 'web'),
         ], function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         });
     }
 

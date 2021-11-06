@@ -2,99 +2,85 @@
 
 namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 
-use Illuminate\Console\Scheduling\Event;
-use Illuminate\Console\Scheduling\Schedule as BaseSchedule;
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
 
-class Schedule extends BaseSchedule
+class Schedule
 {
-    protected $isScheduleAdded = false;
-
-    public function dueEvents($app)
+    public function __construct(ScheduleService $scheduleService, $schedule)
     {
-        if ($this->isScheduleAdded) {
-            return parent::dueEvents($app);
-        }
-        $scheduleService = app(ScheduleService::class);
-        $schedules = $scheduleService->getActives();
+        $tasks = $scheduleService->getActives();
 
-        foreach ($schedules as $schedule) {
+        foreach ($tasks as $task) {
             // @var Event $event
-            if ($schedule->command === 'custom') {
-                $command = $schedule->command_custom;
-                $commandName = $command;
-                $event = $this->exec($command);
+            if ($task->command === 'custom') {
+                $command = $task->command_custom;
+                $event = $schedule->exec($command);
             } else {
-                $command = $schedule->command . $schedule->mapOptions();
-                $commandName
-                    = $schedule->command .
-                    $schedule->mapOptions() . " " .
-                    $this->argumentsToString($schedule->mapArguments() ?? []);
-                $event = $this->command(
+                $command = $task->command . $task->mapOptions();
+                $event = $schedule->command(
                     $command,
-                    array_values($schedule->mapArguments()) ?? []
+                    array_values($task->mapArguments()) ?? []
                 );
             }
 
-            $event->name($commandName)
-                ->cron($schedule->expression);
+            $event->cron($task->expression);
 
             //ensure output is being captured to write history
             $event->storeOutput();
 
-            if ($schedule->even_in_maintenance_mode) {
+            if ($task->even_in_maintenance_mode) {
                 $event->evenInMaintenanceMode();
             }
 
-            if ($schedule->without_overlapping) {
+            if ($task->without_overlapping) {
                 $event->withoutOverlapping();
             }
 
-            if ($schedule->run_in_background) {
+            if ($task->run_in_background) {
                 $event->runInBackground();
             }
 
-            if (!empty($schedule->webhook_before)) {
-                $event->pingBefore($schedule->webhook_before);
+            if (!empty($task->webhook_before)) {
+                $event->pingBefore($task->webhook_before);
             }
 
-            if (!empty($schedule->webhook_after)) {
-                $event->thenPing($schedule->webhook_after);
+            if (!empty($task->webhook_after)) {
+                $event->thenPing($task->webhook_after);
             }
 
-            if (!empty($schedule->email_output)) {
-                if ($schedule->sendmail_success) {
-                    $event->emailOutputTo($schedule->email_output);
+            if (!empty($task->email_output)) {
+                if ($task->sendmail_success) {
+                    $event->emailOutputTo($task->email_output);
                 }
 
-                if ($schedule->sendmail_error) {
-                    $event->emailOutputOnFailure($schedule->email_output);
+                if ($task->sendmail_error) {
+                    $event->emailOutputOnFailure($task->email_output);
                 }
             }
 
-            if (!empty($schedule->on_one_server)) {
+            if (!empty($task->on_one_server)) {
                 $event->onOneServer();
             }
 
             $event->onSuccess(
-                function () use ($schedule, $event, $command) {
-                    $schedule->histories()->create(
+                function () use ($task, $event, $command) {
+                    $task->histories()->create(
                         [
                             'command' => $command,
-                            'params' => $schedule->params,
-                            'options' => $schedule->options,
+                            'params' => $task->params,
+                            'options' => $task->options,
                             'output' => file_get_contents($event->output)
                         ]
                     );
                 }
             );
             $event->onFailure(
-                function () use ($schedule, $event, $command) {
-                    $schedule->histories()->create(
+                function () use ($task, $event, $command) {
+                    $task->histories()->create(
                         [
                             'command' => $command,
-                            'params' => $schedule->params,
-                            'options' => $schedule->options,
+                            'params' => $task->params,
+                            'options' => $task->options,
                             'output' => file_get_contents($event->output)
                         ]
                     );
@@ -102,8 +88,6 @@ class Schedule extends BaseSchedule
             );
             unset($event);
         }
-
-        return parent::dueEvents($app);
     }
 
     public function argumentsToString($array)
