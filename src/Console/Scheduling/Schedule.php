@@ -3,10 +3,11 @@
 namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
+use \Illuminate\Console\Scheduling\Schedule as BaseSchedule;
 
 class Schedule
 {
-    public function __construct(ScheduleService $scheduleService, $schedule)
+    public function __construct(ScheduleService $scheduleService, BaseSchedule $schedule)
     {
         $tasks = $scheduleService->getActives();
 
