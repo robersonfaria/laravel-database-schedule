@@ -37,7 +37,11 @@ class ScheduleRequest extends FormRequest
     {
         $this->merge([
             'sendmail_success' => $this->input('sendmail_success') ?? false,
-            'sendmail_error' => $this->input('sendmail_error') ?? false
+            'sendmail_error' => $this->input('sendmail_error') ?? false,
+            'even_in_maintenance_mode' => $this->input('even_in_maintenance_mode') ?? false,
+            'without_overlapping' => $this->input('without_overlapping') ?? false,
+            'on_one_server' => $this->input('on_one_server') ?? false,
+            'run_in_background' => $this->input('run_in_background') ?? false
         ]);
     }
 
