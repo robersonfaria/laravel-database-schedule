@@ -1,19 +1,35 @@
-<div id="app-form">
+@inject('commandService', 'RobersonFaria\DatabaseSchedule\Http\Services\CommandService')
+<div x-data='{
+    selectedCommand: "{{old('command')}}",
+    commands: @json($commandService->get()),
+    oldArgumentsName: @json(old('arguments.name')),
+    oldArgumentsType: @json(old('arguments.type')),
+    get commandObject() {
+        if(this.commands.hasOwnProperty(this.selectedCommand)) {
+            return this.commands[this.selectedCommand];
+        }
+        return {
+            arguments: [],
+            optionsWithValue: [],
+            options: []
+        }
+    }
+}'>
     <div class="form-group">
         <label>{{ trans('schedule::schedule.fields.command') }}</label>
-        @inject('commandService', 'RobersonFaria\DatabaseSchedule\Http\Services\CommandService')
-        <select name="command"
-                id="command"
-                v-model="form.command"
+        <select x-model="selectedCommand"
+                name="command"
                 class="form-control @error('command') is-invalid @enderror"
                 @if(isset($schedule) && $schedule->command) disabled @endif>
             <option value="">{{ trans('schedule::schedule.messages.select') }}</option>
             <option value="custom">{{ trans('schedule::schedule.messages.custom') }}</option>
-            @foreach($commandService->get() as $command)
-                <option value="{{ $command->name }}">
-                    {{ $command->signature }} - {{ $command->description }}
+            <template x-for="command in commands">
+                <option :key="command.name"
+                        :value="command.name"
+                        x-text="command.name + ' - ' + command.description"
+                        :selected="command.name == '{{old('command')}}'">
                 </option>
-            @endforeach
+            </template>
         </select>
         @error('command')
         <div class="invalid-feedback">{{ $message }}</div>
@@ -23,58 +39,84 @@
         @endif
     </div>
 
-    <div id="parameters" class="ml-3" v-if="commands[form.command] !== undefined && commands[form.command].arguments.length > 0">
-        <div class="row">
-            <div class="col-12">
-                <label>{{ trans('schedule::schedule.fields.arguments') }}:</label>
-                <div id="div_params" class="ml-5 row" v-for="argument in commands[form.command].arguments" :key="argument.name">
-                    <div class="col-8">
-                        <label>@{{ argument.name }}</label>
-                        <input type="text" class="form-control" :name="'params['+argument.name+'][value]'"
-                               :id="argument.name"
-                               :value="getArguments(argument.name)"
-                               :required="argument.required">
-                    </div>
-                    <div class="col-4">
-                        <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
-                        <select :name="'params['+argument.name+'][type]'" :value="getArgumentsType(argument.name)" class="form-control">
-                            <option value="string">String</option>
-                            <option value="function">Function</option>
-                        </select>
+    <template x-if="commandObject.arguments.length || commandObject.optionsWithValue.length">
+        <div>
+            <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
+            <template x-if="commandObject.arguments.length">
+                <div class="row my-3">
+                    <div class="col-12">
+                        <label>{{ trans('schedule::schedule.fields.arguments') }}:</label>
+                        <template x-for="argument in commandObject.arguments">
+                            <div class="ml-5 row">
+                                <div class="col-8 form-group">
+                                    <label x-text="argument.name"></label>
+                                    <input type="text" class="form-control"
+                                           :name="'arguments[name]['+argument.name+']'"
+                                           :value="oldArgumentsName ? oldArgumentsName[argument.name] : argument.default"
+                                           :required="argument.required">
+                                </div>
+                                <div class="col-4 form-group">
+                                    <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
+                                    <select :name="'arguments[type]['+argument.name+']'" class="form-control">
+                                        <option value="string">String</option>
+                                        <option
+                                            value="function"
+                                            :selected="(oldArgumentsType ? oldArgumentsType[argument.name] : '') === 'function'">
+                                            Function
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
-            </div>
-        </div>
-        <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
-    </div>
+            </template>
 
-    <div id="parameters" class="ml-3" v-if="commands[form.command] !== undefined && commands[form.command].options.length > 0">
-        <div class="row">
+            <template x-if="commandObject.optionsWithValue.length">
+                <div class="row my-3" id="options">
+                    <div class="col-12">
+                        <label>{{ trans('schedule::schedule.fields.options_with_value') }}:</label>
+                        <template x-for="optionWithValue in commandObject.optionsWithValue">
+                            <div class="ml-5 row">
+                                <div class="col-8 form-group">
+                                    <label x-text="optionWithValue.name"></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="col-4 form-group">
+                                    <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
+                                    <select class="form-control">
+                                        <option value="string">String</option>
+                                        <option value="function">Function</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <template x-if="commandObject.options.length">
+        <div class="row my-3">
             <div class="col-12">
                 <label>{{ trans('schedule::schedule.fields.options') }}:</label>
-                <div id="div_params" class="ml-5 row" v-for="option in commands[form.command].options" :key="option.name">
-                    <div class="col-8">
-                        <label>@{{ option.name }}</label>
-                        <input type="text" class="form-control" :name="'options['+option.name+'][value]'"
-                               :id="option.name"
-                               :value="getOptions(option.name)"
-                               :required="option.required">
+                <template x-for="option in commandObject.options">
+                    <div class="ml-5 row">
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input">
+                                <label x-text="option.name" class="form-check-label" :for="option.name"></label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-4">
-                        <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
-                        <select :name="'options['+option.name+'][type]'" :value="getOptionsType(option.name)" class="form-control">
-                            <option value="string">String</option>
-                            <option value="function">Function</option>
-                        </select>
-                    </div>
-                </div>
+                </template>
             </div>
         </div>
-        <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
-    </div>
+    </template>
 
-    <div v-if="form.command === 'custom'" class="form-group">
-        <div class="row">
+    <template x-if="selectedCommand === 'custom'">
+        <div class="form-group row">
             <div class="col-12">
                 <input
                    type="text"
@@ -87,7 +129,8 @@
                 @enderror
             </div>
         </div>
-    </div>
+    </template>
+
 
     <div class="form-group">
         <label>{{ trans('schedule::schedule.fields.expression') }}</label>
@@ -215,7 +258,7 @@
     </div>
 </div>
 
-@push('js')
+@push('js2')
 <script>
     var app = new Vue({
         el: '#app-form',

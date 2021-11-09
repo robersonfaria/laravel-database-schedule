@@ -10,6 +10,7 @@ return [
         'command' => 'Command',
         'arguments' => 'Arguments',
         'options' => 'Options',
+        'options_with_value' => 'Options with Value',
         'expression' => 'Cron Expression',
         'output' => 'Output',
         'even_in_maintenance_mode' => 'Even in maintenance mode',
