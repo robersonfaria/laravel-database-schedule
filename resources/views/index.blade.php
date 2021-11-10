@@ -22,14 +22,18 @@
                             <td>
                                 @if(isset($schedule->params))
                                     @foreach($schedule->params as $param => $value)
-                                        {{ $param }}: {{ $value['value'] }}<br>
+                                        @if(isset($value['value']))
+                                            {{ $param }}={{ $value['value'] }}<br>
+                                        @endif
                                     @endforeach
                                 @endif
                             </td>
                             <td>
                                 @if(isset($schedule->options))
                                     @foreach($schedule->options as $param => $value)
-                                        {{ $param }}: {{ $value['value'] }}<br>
+                                        @if(!is_array($value) || isset($value['value']))
+                                            {{ $param }}{{ is_array($value) ? '=' . $value['value'] : '' }}<br>
+                                        @endif
                                     @endforeach
                                 @endif
                             </td>

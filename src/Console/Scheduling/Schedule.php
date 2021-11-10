@@ -16,10 +16,10 @@ class Schedule
                 $command = $task->command_custom;
                 $event = $schedule->exec($command);
             } else {
-                $command = $task->command . $task->mapOptions();
+                $command = $task->command;
                 $event = $schedule->command(
                     $command,
-                    array_values($task->mapArguments()) ?? []
+                    $task->getParameters()
                 );
             }
 

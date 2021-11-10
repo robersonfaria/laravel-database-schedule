@@ -21,8 +21,7 @@ class CommandService
                     'description' => $command->getDescription(),
                     'signature' => $command->getSynopsis(),
                     'arguments' => $this->getArguments($command),
-                    'optionsWithValue' => $this->getOptions($command, true),
-                    'options' => $this->getOptions($command, false),
+                    'options' => $this->getOptions($command),
                 ];
             });
     }
@@ -41,17 +40,22 @@ class CommandService
         return $arguments;
     }
 
-    private function getOptions($command, bool $withValue): array
+    private function getOptions($command): object
     {
-        $options = [];
+        $options = (object)[
+            'withValue' => [],
+            'withoutValue' => []
+        ];
         foreach ($command->getDefinition()->getOptions() as $option)
         {
-            if($withValue === $option->acceptValue()) {
-                $options[] = (object)[
+            if($option->acceptValue()) {
+                $options->withValue[] = (object)[
                     'name' => $option->getName(),
                     'default' => $option->getDefault(),
                     'required' => $option->isValueRequired()
                 ];
+            } else {
+                $options->withoutValue[] = $option->getName();
             }
         }
 

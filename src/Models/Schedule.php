@@ -70,35 +70,48 @@ class Schedule extends Model
         return $query->where('status', true);
     }
 
-    public function mapArguments()
+    public function getParameters(): array
     {
-        $mapedArguments = [
-            array_map(function ($item) {
-                $type = $item['type'] ?? 'string';
-                if (isset($item["type"]) && $item['type'] === 'function') {
-                    return eval("return ${item['value']}");
-                }
-                settype($item['value'], ($option['type'] ?? 'string'));
-                return $item['value'];
-            }, $this->params ?? [])
-        ];
-        return array_filter($mapedArguments[0]);
+        return $this->getArguments() + $this->getOptions();
     }
 
-    public function mapOptions()
+    private function getArguments(): array
     {
-        $str = '';
-        if (isset($this->options) && count($this->options) > 0) {
-            foreach ($this->options as $name => $option) {
-                $type = $option['type'] ?? 'string';
-                if ($type === 'function') {
-                    $option['value'] = eval("return ${$option['value']}");
-                } else {
-                    settype($option['value'], $type);
-                }
-                $str .= ' --' . $name . '=' . $option['value'];
+        $arguments = [];
+
+        foreach (($this->params ?? []) as $argument => $value) {
+            if(empty($value['value'])) {
+                continue;
+            }
+            if (isset($value["type"]) && $value['type'] === 'function') {
+                $arguments[$argument] = (string) $value['value']();
+            } else {
+                $arguments[$argument] = $value['value'];
             }
         }
-        return $str;
+
+        return $arguments;
+    }
+
+    private function getOptions(): array
+    {
+        $options = [];
+        foreach (($this->options ?? []) as $option => $value) {
+            if(is_array($value) && ($value['value'] ?? null) === null) {
+                continue;
+            }
+            $option = '--' . $option;
+            if(is_array($value)) {
+                if (isset($value["type"]) && $value['type'] === 'function') {
+                    $options[$option] = (string) $value['value']();
+                } else {
+                    $options[$option] = $value['value'];
+                }
+            } else {
+                $options[] = $option;
+            }
+        }
+
+        return $options;
     }
 }
