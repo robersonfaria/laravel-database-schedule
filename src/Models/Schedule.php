@@ -70,12 +70,7 @@ class Schedule extends Model
         return $query->where('status', true);
     }
 
-    public function getParameters(): array
-    {
-        return $this->getArguments() + $this->getOptions();
-    }
-
-    private function getArguments(): array
+    public function getArguments(): array
     {
         $arguments = [];
 
@@ -93,7 +88,7 @@ class Schedule extends Model
         return $arguments;
     }
 
-    private function getOptions(): array
+    public function getOptions(): array
     {
         $options = [];
         foreach (($this->options ?? []) as $option => $value) {

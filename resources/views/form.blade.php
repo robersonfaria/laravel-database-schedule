@@ -1,9 +1,9 @@
 @inject('commandService', 'RobersonFaria\DatabaseSchedule\Http\Services\CommandService')
 <div x-data='{
-    selectedCommand: "{{old('command')}}",
+    selectedCommand: "{{old('command', (isset($schedule) ? $schedule->command : ''))}}",
     commands: @json($commandService->get()),
-    oldArguments: @json(old('params')),
-    oldOptions: @json(old('options')),
+    arguments: @json(old('params', (isset($schedule) ? $schedule->params : []))),
+    options: @json(old('options', (isset($schedule) ? $schedule->options : []))),
     get commandObject() {
         if(this.commands.hasOwnProperty(this.selectedCommand)) {
             return this.commands[this.selectedCommand];
@@ -21,24 +21,20 @@
         <label>{{ trans('schedule::schedule.fields.command') }}</label>
         <select x-model="selectedCommand"
                 name="command"
-                class="form-control @error('command') is-invalid @enderror"
-                @if(isset($schedule) && $schedule->command) disabled @endif>
+                class="form-control @error('command') is-invalid @enderror">
             <option value="">{{ trans('schedule::schedule.messages.select') }}</option>
             <option value="custom">{{ trans('schedule::schedule.messages.custom') }}</option>
             <template x-for="command in commands">
                 <option :key="command.name"
                         :value="command.name"
                         x-text="command.name + ' - ' + command.description"
-                        :selected="command.name == '{{old('command')}}'">
+                        :selected="command.name == selectedCommand">
                 </option>
             </template>
         </select>
         @error('command')
-        <div class="invalid-feedback">{{ $message }}</div>
+            <div class="invalid-feedback">{{ $message }}</div>
         @enderror
-        @if(isset($schedule) && $schedule->command)
-            <input type="hidden" name="command" value="{{ $schedule->command }}"/>
-        @endif
     </div>
 
     <template x-if="commandObject.arguments.length || commandObject.options.withValue.length">
@@ -54,7 +50,7 @@
                                     <label x-text="argument.name"></label>
                                     <input type="text" class="form-control"
                                            :name="'params['+argument.name+'][value]'"
-                                           :value="oldArguments ? oldArguments[argument.name].value : argument.default"
+                                           :value="arguments && arguments.hasOwnProperty(argument.name) ? arguments[argument.name].value : argument.default"
                                            :required="argument.required">
                                 </div>
                                 <div class="col-4 form-group">
@@ -62,7 +58,7 @@
                                     <select :name="'params['+argument.name+'][type]'" class="form-control">
                                         <option value="string">String</option>
                                         <option value="function"
-                                                :selected="(oldArguments ? oldArguments[argument.name].type : '') === 'function'">
+                                                :selected="(arguments && arguments.hasOwnProperty(argument.name) ? arguments[argument.name].type : '') === 'function'">
                                             Function
                                         </option>
                                     </select>
@@ -83,7 +79,7 @@
                                     <label x-text="option.name"></label>
                                     <input type="text" class="form-control"
                                            :name="'options['+option.name+'][value]'"
-                                           :value="oldOptions ? oldOptions[option.name].value : option.default"
+                                           :value="options && options.hasOwnProperty(option.name) ? options[option.name].value : option.default"
                                            :required="option.required">
                                 </div>
                                 <div class="col-4 form-group">
@@ -91,7 +87,7 @@
                                     <select :name="'options['+option.name+'][type]'" class="form-control">
                                         <option value="string">String</option>
                                         <option value="function"
-                                                :selected="(oldOptions ? oldOptions[option.name].type : '') === 'function'">
+                                                :selected="(options && options.hasOwnProperty(option.name) ? options[option.name].type : '') === 'function'">
                                             Function
                                         </option>
                                     </select>
@@ -114,7 +110,7 @@
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input"
                                        :name="'options['+option+']'"
-                                       :checked="oldOptions && oldOptions.hasOwnProperty(option)">
+                                       :checked="options && options.hasOwnProperty(option)">
                                 <label x-text="option" class="form-check-label" :for="option"></label>
                             </div>
                         </div>
