@@ -210,6 +210,26 @@
     </div>
 
     <div class="form-check">
+        <input type="checkbox" class="form-check-input"
+               name="log_success"
+               id="log_success"
+               value="1"
+            {{ old('log_success', ($errors->any() ? 0 : ($schedule->log_success ?? !$errors->any()))) == 1 ? 'checked' : '' }}>
+        <label class="form-check-label"
+               for="log_success">{{ trans('schedule::schedule.fields.log_success') }}</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input"
+               name="log_error"
+               id="log_error"
+               value="1"
+            {{ old('log_error', ($errors->any() ? 0 : ($schedule->log_error ?? !$errors->any()))) == 1 ? 'checked' : '' }}>
+        <label class="form-check-label"
+               for="log_error">{{ trans('schedule::schedule.fields.log_error') }}</label>
+    </div>
+
+    <div class="form-check">
         <input type="checkbox" class="form-check-input @error('even_in_maintenance_mode') is-invalid @enderror"
                name="even_in_maintenance_mode"
                id="even_in_maintenance_mode"

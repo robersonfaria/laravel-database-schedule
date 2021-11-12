@@ -64,12 +64,16 @@ class Schedule
 
             $event->onSuccess(
                 function () use ($task, $event, $command) {
-                    $this->createHistoryEntry($task, $event, $command);
+                    if($task->log_success) {
+                        $this->createHistoryEntry($task, $event, $command);
+                    }
                 }
             );
             $event->onFailure(
                 function () use ($task, $event, $command) {
-                    $this->createHistoryEntry($task, $event, $command);
+                    if($task->log_error) {
+                        $this->createHistoryEntry($task, $event, $command);
+                    }
                 }
             );
             unset($event);
