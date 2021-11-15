@@ -38,6 +38,11 @@ return [
     ],
 
     /**
+     * How many jobs do you want to have on each page ?
+     */
+    'per_page' => 10,
+
+    /**
      * Commands settings
      */
     'commands' => [
