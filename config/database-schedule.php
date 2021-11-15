@@ -37,6 +37,9 @@ return [
         'name'   => 'database-schedule'
     ],
 
+    'default_ordering' => 'created_at',
+    'default_ordering_direction' => 'DESC',
+
     /**
      * Commands settings
      */
