@@ -14,26 +14,13 @@
                 <table class="table table-bordered table-striped table-sm table-hover">
                     <thead>
                     <tr>
-                        @php
-                            $route = route(config('database-schedule.route.name', 'database-schedule') . '.index');
-                            if (!function_exists('schedule_highlight')) {
-                                function schedule_highlight($orderBy, $caption) {
-                                    if (request()->has('orderBy') && request()->get('orderBy') === $orderBy) {
-                                        $dir = strpos(url()->previous(), $orderBy) !== false ? 'up' : 'down';
-                                        return '<nobr>' . $caption . '<i class="bi bi-sort-alpha-'.$dir.'"></i></nobr>';
-                                    }
-
-                                    return $caption;
-                                }
-                            }
-                        @endphp
-                        <th class="text-center"><a href="{{ $route }}?orderBy=command">{!! schedule_highlight('command', trans('schedule::schedule.fields.command')) !!}</a></th>
+                        <th class="text-center"><a href="{{ $route }}?orderBy=command">{!! Helpers::highlight('command', trans('schedule::schedule.fields.command')) !!}</a></th>
                         <th class="text-center"> {{ trans('schedule::schedule.fields.arguments') }}</th>
                         <th class="text-center"> {{ trans('schedule::schedule.fields.options') }}</th>
-                        <th class="text-center"><a href="{{ $route }}?orderBy=expression">{!! schedule_highlight('expression', trans('schedule::schedule.fields.expression')) !!}</a></th>
-                        <th class="text-center"><a href="{{ $route }}?orderBy=status">{!! schedule_highlight('status', trans('schedule::schedule.fields.status')) !!}</a></th>
-                        <th class="text-center"><a href="{{ $route }}?orderBy=created_at">{!! schedule_highlight('created_at', trans('schedule::schedule.fields.created_at')) !!}</a></th>
-                        <th class="text-center"><a href="{{ $route }}?orderBy=updated_at">{!! schedule_highlight('updated_at', trans('schedule::schedule.fields.updated_at')) !!}</a></th>
+                        <th class="text-center text-nowrap"><a href="{{ $route }}?orderBy=expression">{!! Helpers::highlight('expression', trans('schedule::schedule.fields.expression')) !!}</a></th>
+                        <th class="text-center"><a href="{{ $route }}?orderBy=status">{!! Helpers::highlight('status', trans('schedule::schedule.fields.status')) !!}</a></th>
+                        <th class="text-center"><a href="{{ $route }}?orderBy=created_at">{!! Helpers::highlight('created_at', trans('schedule::schedule.fields.created_at')) !!}</a></th>
+                        <th class="text-center">{{ trans('schedule::schedule.fields.updated_at') }}</a></th>
                         <th class="text-center" width="270">{{ trans('schedule::schedule.fields.actions') }}</th>
                     </tr>
                     @forelse($schedules as $schedule)

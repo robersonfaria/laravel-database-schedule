@@ -18,7 +18,7 @@ class ScheduleController extends Controller
 
         $schedules = $schedule::query();
 
-        if (request()->has('orderBy') && in_array(request()->get('orderBy'), ['command', 'status', 'expression', 'created_at', 'updated_at'])) {
+        if (request()->has('orderBy') && in_array(request()->get('orderBy'), ['command', 'status', 'expression', 'created_at'])) {
             $direction = 'ASC';
             if (strpos(url()->previous(), request()->get('orderBy')) !== false) {
                 $direction = 'DESC';
@@ -33,9 +33,10 @@ class ScheduleController extends Controller
         }
 
         $schedules = $schedules->cursorPaginate(10);
+        $route = route(config('database-schedule.route.name', 'database-schedule') . '.index');
 
         return view('schedule::index')
-            ->with(compact('schedules'));
+            ->with(compact('schedules', 'route'));
     }
 
     /**

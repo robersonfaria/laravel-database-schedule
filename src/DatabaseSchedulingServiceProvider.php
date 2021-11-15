@@ -3,12 +3,15 @@
 namespace RobersonFaria\DatabaseSchedule;
 
 use Cron\CronExpression;
+use RobersonFaria\DatabaseSchedule\View\Helpers;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use RobersonFaria\DatabaseSchedule\Console\Commands\test;
 use RobersonFaria\DatabaseSchedule\Observer\ScheduleObserver;
 use Illuminate\Console\Scheduling\Schedule as BaseSchedule;
+use Illuminate\Support\Facades\Blade;
 use RobersonFaria\DatabaseSchedule\Console\Scheduling\Schedule;
 
 class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServiceProvider
@@ -86,6 +89,9 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
             __DIR__ . '/../config/database-schedule.php',
             'database-schedule'
         );
+
+        // @link https://stackoverflow.com/questions/21574413/when-making-a-laravel-package-how-do-i-register-the-service-provider-and-alias
+        AliasLoader::getInstance()->alias('Helpers', Helpers::class);
     }
 
     protected function scheduleTimezone($config)
