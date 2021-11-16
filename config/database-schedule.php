@@ -41,6 +41,11 @@ return [
     'default_ordering_direction' => 'DESC',
 
     /**
+     * How many jobs do you want to have on each page ?
+     */
+    'per_page' => 10,
+
+    /**
      * Commands settings
      */
     'commands' => [

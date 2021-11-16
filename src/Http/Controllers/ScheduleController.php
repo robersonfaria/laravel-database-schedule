@@ -15,6 +15,7 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedule = app(config('database-schedule.model'));
+        $schedules = $schedule->paginate(config('database-schedule.per_page') ?? 10);
 
         $schedules = $schedule::query();
 
@@ -32,7 +33,7 @@ class ScheduleController extends Controller
             );
         }
 
-        $schedules = $schedules->cursorPaginate(10);
+        $schedules = $schedules->cursorPaginate(config('database-schedule.per_page') ?? 10);
         $route = route(config('database-schedule.route.name', 'database-schedule') . '.index');
 
         return view('schedule::index')
