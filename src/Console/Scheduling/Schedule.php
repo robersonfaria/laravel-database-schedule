@@ -17,10 +17,10 @@ class Schedule
                 $command = $task->command_custom;
                 $event = $schedule->exec($command);
             } else {
-                $command = $task->command . $task->mapOptions();
+                $command = $task->command;
                 $event = $schedule->command(
                     $command,
-                    array_values($task->mapArguments()) ?? []
+                    $task->getArguments() + $task->getOptions()
                 );
             }
 
@@ -65,38 +65,27 @@ class Schedule
 
             $event->onSuccess(
                 function () use ($task, $event, $command) {
-                    $task->histories()->create(
-                        [
-                            'command' => $command,
-                            'params' => $task->params,
-                            'options' => $task->options,
-                            'output' => file_get_contents($event->output)
-                        ]
-                    );
+                    $this->createHistoryEntry($task, $event, $command);
                 }
             );
             $event->onFailure(
                 function () use ($task, $event, $command) {
-                    $task->histories()->create(
-                        [
-                            'command' => $command,
-                            'params' => $task->params,
-                            'options' => $task->options,
-                            'output' => file_get_contents($event->output)
-                        ]
-                    );
+                    $this->createHistoryEntry($task, $event, $command);
                 }
             );
             unset($event);
         }
     }
 
-    public function argumentsToString($array)
+    private function createHistoryEntry($task, $event, $command)
     {
-        $str = '';
-        foreach ($array as $key => $value) {
-            $str .= " {$key}={$value}";
-        }
-        return $str;
+        $task->histories()->create(
+            [
+                'command' => $command,
+                'params' => $task->getArguments(),
+                'options' => $task->getOptions(),
+                'output' => file_get_contents($event->output)
+            ]
+        );
     }
 }

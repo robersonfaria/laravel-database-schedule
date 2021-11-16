@@ -10,6 +10,7 @@ return [
         'command' => 'Command',
         'arguments' => 'Arguments',
         'options' => 'Options',
+        'options_with_value' => 'Options with Value',
         'expression' => 'Cron Expression',
         'output' => 'Output',
         'even_in_maintenance_mode' => 'Even in maintenance mode',
@@ -23,7 +24,9 @@ return [
         'status' => 'Status',
         'actions' => 'Actions',
         'data-type' => 'Data type',
-        'run_in_background' => 'Run in background'
+        'run_in_background' => 'Run in background',
+        'created_at' => 'Created At',
+        'updated_at' => 'Updated At'
     ],
     'messages' => [
         'no-records-found' => 'No records found.',
@@ -49,5 +52,6 @@ return [
         'activate' => 'Activate',
         'delete' => 'Delete',
         'history' => 'History',
-    ]
+    ],
+    'never' => 'Never',
 ];
