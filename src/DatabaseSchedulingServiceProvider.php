@@ -5,13 +5,12 @@ namespace RobersonFaria\DatabaseSchedule;
 use Cron\CronExpression;
 use RobersonFaria\DatabaseSchedule\View\Helpers;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
-use RobersonFaria\DatabaseSchedule\Console\Commands\test;
 use RobersonFaria\DatabaseSchedule\Observer\ScheduleObserver;
 use Illuminate\Console\Scheduling\Schedule as BaseSchedule;
-use Illuminate\Support\Facades\Blade;
+use RobersonFaria\DatabaseSchedule\Console\Commands\TestJobCommand;
+use RobersonFaria\DatabaseSchedule\Console\Commands\ScheduleClearCacheCommand;
 use RobersonFaria\DatabaseSchedule\Console\Scheduling\Schedule;
 
 class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServiceProvider
@@ -67,7 +66,8 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
         });
 
         $this->commands([
-            test::class
+            TestJobCommand::class,
+            ScheduleClearCacheCommand::class,
         ]);
     }
 
