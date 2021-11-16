@@ -19,10 +19,12 @@ class ScheduleHistory extends Model
         'command',
         'params',
         'output',
+        'options'
     ];
 
     protected $casts = [
         'params' => 'array',
+        'options' => 'array'
     ];
 
     /**
