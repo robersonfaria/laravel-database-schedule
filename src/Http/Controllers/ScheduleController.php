@@ -15,7 +15,7 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedule = app(config('database-schedule.model'));
-        $schedules = $schedule->paginate(10);
+        $schedules = $schedule->paginate(config('database-schedule.per_page') ?? 10);
 
         return view('schedule::index')
             ->with(compact('schedules'));

@@ -55,6 +55,10 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
             $model::observe(ScheduleObserver::class);
         }
 
+        if (substr(app()->version(), 0, 1) >= 8) {
+            \Illuminate\Pagination\Paginator::useBootstrap();
+        }
+
         $this->app->resolving(BaseSchedule::class, function ($schedule) {
             return app(Schedule::class, ['schedule' => $schedule]);
         });
