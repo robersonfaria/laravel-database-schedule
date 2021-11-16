@@ -3,32 +3,23 @@
 namespace RobersonFaria\DatabaseSchedule\Console\Commands;
 
 use Illuminate\Console\Command;
+use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
 
-class test extends Command
+class ScheduleClearCacheCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cron:test';
+    protected $signature = 'schedule:clear-cache';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command to test operation.';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Clears the cache of the scheduler.';
 
     /**
      * Execute the console command.
@@ -37,8 +28,8 @@ class test extends Command
      */
     public function handle()
     {
-        $this->info('Hello the test worked.');
-        \Log::info('Hello the test worked.');
+        (new ScheduleService())->clearCache();
+        $this->info('Scheduling cache cleared.');
         return 0;
     }
 }
