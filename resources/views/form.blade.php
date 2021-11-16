@@ -1,93 +1,140 @@
-<div id="app-form">
+@inject('commandService', 'RobersonFaria\DatabaseSchedule\Http\Services\CommandService')
+<div x-data='{
+    selectedCommand: "{{old('command', (isset($schedule) ? $schedule->command : ''))}}",
+    commands: @json($commandService->get()),
+    arguments: @json(old('params', (isset($schedule) ? $schedule->params : []))),
+    options: @json(old('options', (isset($schedule) ? $schedule->options : []))),
+    get commandObject() {
+        if(this.commands.hasOwnProperty(this.selectedCommand)) {
+            return this.commands[this.selectedCommand];
+        }
+        return {
+            arguments: [],
+            options: {
+                withValue: [],
+                withoutValue: []
+            }
+        }
+    }
+}'>
     <div class="form-group">
         <label>{{ trans('schedule::schedule.fields.command') }}</label>
-        @inject('commandService', 'RobersonFaria\DatabaseSchedule\Http\Services\CommandService')
-        <select name="command"
-                id="command"
-                v-model="form.command"
-                class="form-control @error('command') is-invalid @enderror"
-                @if(isset($schedule) && $schedule->command) disabled @endif>
+        <select x-model="selectedCommand"
+                name="command"
+                class="form-control @error('command') is-invalid @enderror">
             <option value="">{{ trans('schedule::schedule.messages.select') }}</option>
             <option value="custom">{{ trans('schedule::schedule.messages.custom') }}</option>
-            @foreach($commandService->get() as $command)
-                <option value="{{ $command->name }}">
-                    {{ $command->signature }} - {{ $command->description }}
+            <template x-for="command in commands">
+                <option :key="command.name"
+                        :value="command.name"
+                        x-text="command.name + ' - ' + command.description"
+                        :selected="command.name == selectedCommand">
                 </option>
-            @endforeach
+            </template>
         </select>
         @error('command')
-        <div class="invalid-feedback">{{ $message }}</div>
+            <div class="invalid-feedback">{{ $message }}</div>
         @enderror
-        @if(isset($schedule) && $schedule->command)
-            <input type="hidden" name="command" value="{{ $schedule->command }}"/>
-        @endif
     </div>
 
-    <div id="parameters" class="ml-3" v-if="commands[form.command] !== undefined && commands[form.command].arguments.length > 0">
-        <div class="row">
-            <div class="col-12">
-                <label>{{ trans('schedule::schedule.fields.arguments') }}:</label>
-                <div id="div_params" class="ml-5 row" v-for="argument in commands[form.command].arguments" :key="argument.name">
-                    <div class="col-8">
-                        <label>@{{ argument.name }}</label>
-                        <input type="text" class="form-control" :name="'params['+argument.name+'][value]'"
-                               :id="argument.name"
-                               :value="getArguments(argument.name)"
-                               :required="argument.required">
-                    </div>
-                    <div class="col-4">
-                        <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
-                        <select :name="'params['+argument.name+'][type]'" :value="getArgumentsType(argument.name)" class="form-control">
-                            <option value="string">String</option>
-                            <option value="function">Function</option>
-                        </select>
+    <template x-if="commandObject.arguments.length || commandObject.options.withValue.length">
+        <div>
+            <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
+            <template x-if="commandObject.arguments.length">
+                <div class="row my-3">
+                    <div class="col-12">
+                        <label>{{ trans('schedule::schedule.fields.arguments') }}:</label>
+                        <template x-for="argument in commandObject.arguments">
+                            <div class="ml-5 row">
+                                <div class="col-8 form-group">
+                                    <label x-text="argument.name"></label>
+                                    <input type="text" class="form-control"
+                                           :name="'params['+argument.name+'][value]'"
+                                           :value="arguments && arguments.hasOwnProperty(argument.name) ? arguments[argument.name].value : argument.default"
+                                           :required="argument.required">
+                                </div>
+                                <div class="col-4 form-group">
+                                    <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
+                                    <select :name="'params['+argument.name+'][type]'" class="form-control">
+                                        <option value="string">String</option>
+                                        <option value="function"
+                                                :selected="(arguments && arguments.hasOwnProperty(argument.name) ? arguments[argument.name].type : '') === 'function'">
+                                            Function
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
-            </div>
-        </div>
-        <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
-    </div>
+            </template>
 
-    <div id="parameters" class="ml-3" v-if="commands[form.command] !== undefined && commands[form.command].options.length > 0">
-        <div class="row">
+            <template x-if="commandObject.options.withValue.length">
+                <div class="row my-3" id="options">
+                    <div class="col-12">
+                        <label>{{ trans('schedule::schedule.fields.options_with_value') }}:</label>
+                        <template x-for="option in commandObject.options.withValue">
+                            <div class="ml-5 row">
+                                <div class="col-8 form-group">
+                                    <label x-text="option.name"></label>
+                                    <input type="text" class="form-control"
+                                           :name="'options['+option.name+'][value]'"
+                                           :value="options && options.hasOwnProperty(option.name) ? options[option.name].value : option.default"
+                                           :required="option.required">
+                                </div>
+                                <div class="col-4 form-group">
+                                    <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
+                                    <select :name="'options['+option.name+'][type]'" class="form-control">
+                                        <option value="string">String</option>
+                                        <option value="function"
+                                                :selected="(options && options.hasOwnProperty(option.name) ? options[option.name].type : '') === 'function'">
+                                            Function
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <template x-if="commandObject.options.withoutValue.length">
+        <div class="row my-3">
             <div class="col-12">
                 <label>{{ trans('schedule::schedule.fields.options') }}:</label>
-                <div id="div_params" class="ml-5 row" v-for="option in commands[form.command].options" :key="option.name">
-                    <div class="col-8">
-                        <label>@{{ option.name }}</label>
-                        <input type="text" class="form-control" :name="'options['+option.name+'][value]'"
-                               :id="option.name"
-                               :value="getOptions(option.name)"
-                               :required="option.required">
+                <template x-for="option in commandObject.options.withoutValue">
+                    <div class="ml-5 row">
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       :name="'options['+option+']'"
+                                       :checked="options && options.hasOwnProperty(option)">
+                                <label x-text="option" class="form-check-label" :for="option"></label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-4">
-                        <label>{{ trans('schedule::schedule.fields.data-type') }}</label>
-                        <select :name="'options['+option.name+'][type]'" :value="getOptionsType(option.name)" class="form-control">
-                            <option value="string">String</option>
-                            <option value="function">Function</option>
-                        </select>
-                    </div>
-                </div>
+                </template>
             </div>
         </div>
-        <code>{{ trans('schedule::schedule.messages.attention-type-function') }}</code>
-    </div>
+    </template>
 
-    <div v-if="form.command === 'custom'" class="form-group">
-        <div class="row">
+    <template x-if="selectedCommand === 'custom'">
+        <div class="form-group row">
             <div class="col-12">
                 <input
                    type="text"
                    placeholder="{{ trans('schedule::schedule.messages.custom-command-here')}}"
                    name="command_custom"
-                   v-model="form.command_custom"
                    class="form-control @error('command_custom') is-invalid @enderror"/>
                 @error('command_custom')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
         </div>
-    </div>
+    </template>
+
 
     <div class="form-group">
         <label>{{ trans('schedule::schedule.fields.expression') }}</label>
@@ -98,7 +145,7 @@
         <div class="invalid-feedback">{{ $message }}</div>
         @enderror
         @if(config('database-schedule.tool-help-cron-expression.enable'))
-            <small id="expressiondHelpBlock" class="form-text text-muted">
+            <small id="expressionHelpBlock" class="form-text text-muted">
                 <a href="{{ config('database-schedule.tool-help-cron-expression.url') }}" target="_blank">
                     {{ trans("schedule::schedule.messages.help-cron-expression") }}
                 </a>
@@ -214,49 +261,3 @@
         @enderror
     </div>
 </div>
-
-@push('js')
-<script>
-    var app = new Vue({
-        el: '#app-form',
-        data: {
-            commands: @json($commandService->get()),
-            requests: {
-                arguments: @json(old('params') ?? $schedule->params ?? []),
-                options: @json(old('options') ?? $schedule->options ?? [])
-            },
-            form: {
-                command: '{{ old('command', $schedule->command ?? '') }}',
-                'command_custom': '{{ old('command_custom', $schedule->command_custom ?? '') }}',
-                params: []
-            }
-        },
-        methods: {
-            getArguments: function (field) {
-                if(this.requests.arguments !== null && this.requests.arguments[field] !== undefined) {
-                    return this.requests.arguments[field].value;
-                }
-                return '';
-            },
-            getArgumentsType: function (field) {
-                if(this.requests.arguments !== null && this.requests.arguments[field] !== undefined) {
-                    return this.requests.arguments[field].type;
-                }
-                return '';
-            },
-            getOptions: function (field) {
-                if(this.requests.options !== null && this.requests.options[field] !== undefined) {
-                    return this.requests.options[field].value;
-                }
-                return '';
-            },
-            getOptionsType: function (field) {
-                if(this.requests.options !== null && this.requests.options[field] !== undefined) {
-                    return this.requests.options[field].type;
-                }
-                return '';
-            }
-        }
-    })
-</script>
-@endpush

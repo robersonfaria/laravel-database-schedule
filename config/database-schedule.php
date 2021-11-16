@@ -37,6 +37,14 @@ return [
         'name'   => 'database-schedule'
     ],
 
+    'default_ordering' => 'created_at',
+    'default_ordering_direction' => 'DESC',
+
+    /**
+     * How many jobs do you want to have on each page ?
+     */
+    'per_page' => 10,
+
     /**
      * Commands settings
      */

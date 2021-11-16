@@ -15,10 +15,29 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedule = app(config('database-schedule.model'));
-        $schedules = $schedule->paginate(10);
+        $schedules = $schedule->paginate(config('database-schedule.per_page') ?? 10);
+
+        $schedules = $schedule::query();
+
+        if (request()->has('orderBy') && in_array(request()->get('orderBy'), ['command', 'status', 'expression', 'created_at'])) {
+            $direction = 'ASC';
+            if (strpos(url()->previous(), request()->get('orderBy')) !== false) {
+                $direction = 'DESC';
+            }
+            $schedules->orderBy(request()->get('orderBy'), $direction);
+        } else {
+            // default ordering - youngest at the top
+            $schedules->orderBy(
+                config('database-schedule.default_ordering') ?? 'created_at',
+                config('database-schedule.default_ordering_direction') ?? 'ASC',
+            );
+        }
+
+        $schedules = $schedules->paginate(config('database-schedule.per_page') ?? 10);
+        $route = route(config('database-schedule.route.name', 'database-schedule') . '.index');
 
         return view('schedule::index')
-            ->with(compact('schedules'));
+            ->with(compact('schedules', 'route'));
     }
 
     /**
