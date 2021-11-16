@@ -43,7 +43,7 @@ return [
     /**
      * How many jobs do you want to have on each page ?
      */
-    'per_page' => 10,
+    'per_page' => 2,
 
     /**
      * Commands settings

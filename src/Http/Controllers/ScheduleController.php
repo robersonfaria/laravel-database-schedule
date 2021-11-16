@@ -33,7 +33,7 @@ class ScheduleController extends Controller
             );
         }
 
-        $schedules = $schedules->cursorPaginate(config('database-schedule.per_page') ?? 10);
+        $schedules = $schedules->paginate(config('database-schedule.per_page') ?? 10);
         $route = route(config('database-schedule.route.name', 'database-schedule') . '.index');
 
         return view('schedule::index')
