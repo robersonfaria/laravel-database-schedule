@@ -4,16 +4,23 @@
     <div class="container">
         @include('schedule::messages')
         <div class="card">
-            <div class="card-header">{{ trans('schedule::schedule.titles.list') }}</div>
+            <div class="card-header">{{ trans('schedule::schedule.titles.list') }}
+                <small><code>
+                    {{ trans('schedule::schedule.messages.timezone') }}{{ config('database-schedule.timezone') }}
+                </code></small>
+            </div>
+
             <div class="card-body">
                 <table class="table table-bordered table-striped table-sm table-hover">
                     <thead>
                     <tr>
-                        <th class="text-center">{{ trans('schedule::schedule.fields.command') }}</th>
-                        <th class="text-center">{{ trans('schedule::schedule.fields.arguments') }}</th>
-                        <th class="text-center">{{ trans('schedule::schedule.fields.options') }}</th>
-                        <th class="text-center">{{ trans('schedule::schedule.fields.expression') }}</th>
-                        <th class="text-center">{{ trans('schedule::schedule.fields.status') }}</th>
+                        <th class="text-center"><a href="{{ $route }}?orderBy=command">{!! Helpers::highlight('command', trans('schedule::schedule.fields.command')) !!}</a></th>
+                        <th class="text-center"> {{ trans('schedule::schedule.fields.arguments') }}</th>
+                        <th class="text-center"> {{ trans('schedule::schedule.fields.options') }}</th>
+                        <th class="text-center text-nowrap"><a href="{{ $route }}?orderBy=expression">{!! Helpers::highlight('expression', trans('schedule::schedule.fields.expression')) !!}</a></th>
+                        <th class="text-center"><a href="{{ $route }}?orderBy=status">{!! Helpers::highlight('status', trans('schedule::schedule.fields.status')) !!}</a></th>
+                        <th class="text-center"><a href="{{ $route }}?orderBy=created_at">{!! Helpers::highlight('created_at', trans('schedule::schedule.fields.created_at')) !!}</a></th>
+                        <th class="text-center">{{ trans('schedule::schedule.fields.updated_at') }}</a></th>
                         <th class="text-center" width="270">{{ trans('schedule::schedule.fields.actions') }}</th>
                     </tr>
                     @forelse($schedules as $schedule)
@@ -42,10 +49,12 @@
                                     @endforeach
                                 @endif
                             </td>
-                            <td>{{ $schedule->expression }}</td>
-                            <td class="{{ $schedule->status ? 'text-success' : 'text-secondary' }}">
+                            <td class="text-center">{{ $schedule->expression }}</td>
+                            <td class="text-center {{ $schedule->status ? 'text-success' : 'text-secondary' }}">
                                 {{ $schedule->status ? trans('schedule::schedule.status.active') : trans('schedule::schedule.status.inactive') }}
                             </td>
+                            <td class="text-center">{{ $schedule->created_at }}</td>
+                            <td class="text-center">{{ $schedule->created_at == $schedule->updated_at ? trans('schedule::schedule.never') : $schedule->updated_at }}</td>
                             <td class="text-center">
                                 <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@show', $schedule) }}"
                                    class="btn btn-sm btn-info">
@@ -88,9 +97,6 @@
                     @endforelse
                     </thead>
                 </table>
-                <code>
-                    {{ trans('schedule::schedule.messages.timezone') }}{{ config('database-schedule.timezone') }}
-                </code>
                 <div class='d-flex'>
                     <div class='mx-auto'>
                         {{ $schedules->links() }}

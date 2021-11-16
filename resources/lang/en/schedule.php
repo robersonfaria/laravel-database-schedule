@@ -24,7 +24,9 @@ return [
         'status' => 'Status',
         'actions' => 'Actions',
         'data-type' => 'Data type',
-        'run_in_background' => 'Run in background'
+        'run_in_background' => 'Run in background',
+        'created_at' => 'Created At',
+        'updated_at' => 'Updated At'
     ],
     'messages' => [
         'no-records-found' => 'No records found.',
@@ -50,5 +52,6 @@ return [
         'activate' => 'Activate',
         'delete' => 'Delete',
         'history' => 'History',
-    ]
+    ],
+    'never' => 'Never',
 ];
