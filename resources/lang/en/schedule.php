@@ -21,6 +21,8 @@ return [
         'email_output' => 'Email for sending output',
         'sendmail_success' => 'Send email in case of success to execute the command',
         'sendmail_error' => 'Send email in case of failure to execute the command',
+        'log_success' => 'Write command output into history table in case of success to execute the command',
+        'log_error' => 'Write command output into history table in case of failure to execute the command',
         'status' => 'Status',
         'actions' => 'Actions',
         'data-type' => 'Data type',

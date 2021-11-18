@@ -32,6 +32,8 @@ class Schedule extends Model
         'email_output',
         'sendmail_error',
         'sendmail_success',
+        'log_success',
+        'log_error',
         'status',
         'run_in_background'
     ];
