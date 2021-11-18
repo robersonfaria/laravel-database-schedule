@@ -40,6 +40,8 @@ class ScheduleRequest extends FormRequest
             'options' => [],
             'sendmail_success' => false,
             'sendmail_error' => false,
+            'log_success' => false,
+            'log_error' => false,
             'even_in_maintenance_mode' => false,
             'without_overlapping' => false,
             'on_one_server' => false,
