@@ -9,8 +9,14 @@
                     {{ trans('schedule::schedule.messages.timezone') }}{{ config('database-schedule.timezone') }}
                 </code></small>
             </div>
-
-            <div class="card-body">
+            <div class="card-body"
+                 x-data="{
+                 messageTemplate:'{{ trans('schedule::schedule.messages.delete_cronjob_confirm') }}',
+                 message: '',
+                 routeTemplate:'{{ route(config('database-schedule.route.name', 'database-schedule') . '.destroy', ['schedule' => 0]) }}',
+                 route: ''
+            }">
+                @include('schedule::delete-modal')
                 <table class="table table-bordered table-striped table-sm table-hover">
                     <thead>
                     <tr>
@@ -54,7 +60,7 @@
                                 {{ $schedule->status ? trans('schedule::schedule.status.active') : trans('schedule::schedule.status.inactive') }}
                             </td>
                             <td class="text-center">{{ $schedule->created_at }}</td>
-                            <td class="text-center">{{ $schedule->created_at == $schedule->updated_at ? trans('schedule::schedule.never') : $schedule->updated_at }}</td>
+                            <td class="text-center">{{ $schedule->created_at == $schedule->updated_at ? trans('schedule::schedule.fields.never') : $schedule->updated_at }}</td>
                             <td class="text-center">
                                 <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@show', $schedule) }}"
                                    class="btn btn-sm btn-info">
@@ -64,25 +70,18 @@
                                    class="btn btn-sm btn-primary">
                                     {{ trans('schedule::schedule.buttons.edit') }}
                                 </a>
-                                @if($schedule->status)
-                                    <form action="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@status', [$schedule, 'status' => 0]) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-secondary btn-sm">
-                                            {{ trans('schedule::schedule.buttons.inactivate') }}
-                                        </button>
-                                    </form>
-                                @else
-                                    <form action="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@status', [$schedule, 'status' => 1]) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            {{ trans('schedule::schedule.buttons.activate') }}
-                                        </button>
-                                    </form>
-                                @endif
-                                <form action="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@destroy', $schedule) }}" method="POST" class="d-inline">
-                                    @method('DELETE')
+                                <form action="{{ route(config('database-schedule.route.name', 'database-schedule') . '.status', ['schedule' => $schedule->id, 'status' => $schedule->status ? 0 : 1]) }}"
+                                      method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm">
+                                    <button type="submit" class="btn btn-{{ $schedule->status ? 'secondary' : 'success' }} btn-sm">
+                                        {{ trans('schedule::schedule.buttons.' . ($schedule->status ? 'inactivate' : 'activate')) }}
+                                    </button>
+                                </form>
+                                    <button
+                                        x-on:click="message=messageTemplate.replace(':cronjob', '{{ $schedule->command }}'); route=routeTemplate.replace('0', {{ $schedule->id }})"
+                                        type="button" class="btn btn-danger btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#delete-modal">
                                         {{ trans('schedule::schedule.buttons.delete') }}
                                     </button>
                                 </form>
