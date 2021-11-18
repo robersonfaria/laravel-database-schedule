@@ -85,7 +85,6 @@
                                         data-target="#delete-modal">
                                     <i title="{{ trans('schedule::schedule.buttons.delete') }}" class="bi bi-trash"></i>
                                 </button>
-                                </form>
                             </td>
                         </tr>
                     @empty
