@@ -1,3 +1,6 @@
 /vendor
 /.idea
 .DS_Store
+
+# php code sniffer
+.php_cs.cache

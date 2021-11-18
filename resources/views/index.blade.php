@@ -1,7 +1,7 @@
 @extends('schedule::layout.master')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid" style="max-width: 75%;">
         @include('schedule::messages')
         <div class="card">
             <div class="card-header">{{ trans('schedule::schedule.titles.list') }}
@@ -13,16 +13,11 @@
             <div class="card-body">
                 <table class="table table-bordered table-striped table-sm table-hover">
                     <thead>
-                    <tr>
-                        <th class="text-center"><a href="{{ $route }}?orderBy=command">{!! Helpers::highlight('command', trans('schedule::schedule.fields.command')) !!}</a></th>
-                        <th class="text-center"> {{ trans('schedule::schedule.fields.arguments') }}</th>
-                        <th class="text-center"> {{ trans('schedule::schedule.fields.options') }}</th>
-                        <th class="text-center text-nowrap"><a href="{{ $route }}?orderBy=expression">{!! Helpers::highlight('expression', trans('schedule::schedule.fields.expression')) !!}</a></th>
-                        <th class="text-center"><a href="{{ $route }}?orderBy=status">{!! Helpers::highlight('status', trans('schedule::schedule.fields.status')) !!}</a></th>
-                        <th class="text-center"><a href="{{ $route }}?orderBy=created_at">{!! Helpers::highlight('created_at', trans('schedule::schedule.fields.created_at')) !!}</a></th>
-                        <th class="text-center">{{ trans('schedule::schedule.fields.updated_at') }}</a></th>
-                        <th class="text-center" width="270">{{ trans('schedule::schedule.fields.actions') }}</th>
-                    </tr>
+                        <tr>
+                            {!! Helpers::buildHeader() !!}
+                        </tr>
+                    </td>
+                    <tbody>
                     @forelse($schedules as $schedule)
                         <tr>
                             <td>{{ $schedule->command }}@if ($schedule->command == 'custom'): {{ $schedule->command_custom }} @endif</td>
@@ -50,32 +45,32 @@
                                 @endif
                             </td>
                             <td class="text-center">{{ $schedule->expression }}</td>
+                            <td class="text-center">{{ $schedule->created_at }}</td>
+                            <td class="text-center">{{ $schedule->created_at == $schedule->updated_at ? trans('schedule::schedule.never') : $schedule->updated_at }}</td>
                             <td class="text-center {{ $schedule->status ? 'text-success' : 'text-secondary' }}">
                                 {{ $schedule->status ? trans('schedule::schedule.status.active') : trans('schedule::schedule.status.inactive') }}
                             </td>
-                            <td class="text-center">{{ $schedule->created_at }}</td>
-                            <td class="text-center">{{ $schedule->created_at == $schedule->updated_at ? trans('schedule::schedule.never') : $schedule->updated_at }}</td>
-                            <td class="text-center">
+                            <td class="text-center no-wrap">
                                 <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@show', $schedule) }}"
                                    class="btn btn-sm btn-info">
-                                    {{ trans('schedule::schedule.buttons.history') }}
+                                    <i title="{{ trans('schedule::schedule.buttons.history') }}" class="bi bi-journal"> </i>
                                 </a>
                                 <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@edit', $schedule) }}"
                                    class="btn btn-sm btn-primary">
-                                    {{ trans('schedule::schedule.buttons.edit') }}
+                                    <i class="bi bi-pencil-square"></i>
                                 </a>
                                 @if($schedule->status)
                                     <form action="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@status', [$schedule, 'status' => 0]) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-secondary btn-sm">
-                                            {{ trans('schedule::schedule.buttons.inactivate') }}
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i title="{{ trans('schedule::schedule.buttons.inactivate') }}" class="bi bi-pause"></i>
                                         </button>
                                     </form>
                                 @else
                                     <form action="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@status', [$schedule, 'status' => 1]) }}" method="POST" class="d-inline">
                                         @csrf
                                         <button type="submit" class="btn btn-success btn-sm">
-                                            {{ trans('schedule::schedule.buttons.activate') }}
+                                            <i title="{{ trans('schedule::schedule.buttons.activate') }}" class="bi bi-play"></i>
                                         </button>
                                     </form>
                                 @endif
@@ -83,7 +78,7 @@
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        {{ trans('schedule::schedule.buttons.delete') }}
+                                        <i title="{{ trans('schedule::schedule.buttons.delete') }}" class="bi bi-trash"></i>
                                     </button>
                                 </form>
                             </td>
@@ -95,7 +90,7 @@
                             </td>
                         </tr>
                     @endforelse
-                    </thead>
+                    </tbody>
                 </table>
                 <div class='d-flex'>
                     <div class='mx-auto'>
