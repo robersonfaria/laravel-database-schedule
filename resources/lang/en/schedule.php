@@ -12,6 +12,7 @@ return [
         'options' => 'Options',
         'options_with_value' => 'Options with Value',
         'expression' => 'Cron Expression',
+        'log_filename' => 'Log filename',
         'output' => 'Output',
         'even_in_maintenance_mode' => 'Even in maintenance mode',
         'without_overlapping' => 'Without overlapping',
@@ -40,6 +41,7 @@ return [
         'custom' => 'Custom Command',
         'custom-command-here' => 'Custom Command here (e.g. `cat /proc/cpuinfo` or `artisan db:migrate`)',
         'help-cron-expression' => 'If necessary click here and use a tool to facilitate the creation of the cron expression',
+        'help-log-filename' => 'If log file is set, the log messages from this cron are written to storage/logs/<log filename>.log',
         'attention-type-function' => "ATTENTION: parameters of the type 'function' are executed before the execution of the scheduling and its return is passed as parameter. Use with care, it can break your job",
         'delete_cronjob' => 'Delete cronjob',
         'delete_cronjob_confirm' => 'Do you really want to delete the cronjob ":cronjob"?'

@@ -35,7 +35,8 @@ class Schedule extends Model
         'log_success',
         'log_error',
         'status',
-        'run_in_background'
+        'run_in_background',
+        'log_filename'
     ];
 
     protected $attributes = [

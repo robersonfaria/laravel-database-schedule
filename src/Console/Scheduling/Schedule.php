@@ -4,6 +4,7 @@ namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
 use \Illuminate\Console\Scheduling\Schedule as BaseSchedule;
+use Illuminate\Support\Facades\Log;
 
 class Schedule
 {
@@ -63,15 +64,22 @@ class Schedule
                 $event->onOneServer();
             }
 
+            $logChannel = $channel = Log::build([
+                'driver' => 'single',
+                'path' => $task->log_filename ? storage_path('logs/' . $task->log_filename . '.log') : null,
+            ]);
+
             $event->onSuccess(
-                function () use ($task, $event, $command) {
+                function () use ($task, $event, $command, $logChannel) {
+                    Log::stack([$logChannel])->info(file_get_contents($event->output));
                     if($task->log_success) {
                         $this->createHistoryEntry($task, $event, $command);
                     }
                 }
             );
             $event->onFailure(
-                function () use ($task, $event, $command) {
+                function () use ($task, $event, $command, $logChannel) {
+                    Log::stack([$logChannel])->critical(file_get_contents($event->output));
                     if($task->log_error) {
                         $this->createHistoryEntry($task, $event, $command);
                     }
