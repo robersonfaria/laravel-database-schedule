@@ -16,12 +16,12 @@ class ScheduleController extends Controller
     {
         $schedule = app(config('database-schedule.model'));
 
-        $orderBy = request()->get('orderBy') ?? config('database-schedule.default_ordering') ?? 'created_at';
-        $direction = request()->get('direction') ?? config('database-schedule.default_ordering_direction') ?? 'DESC';
+        $orderBy = request()->get('orderBy') ?? config('database-schedule.default_ordering', 'created_at');
+        $direction = request()->get('direction') ?? config('database-schedule.default_ordering_direction', 'DESC');
 
         $schedules = $schedule::query()
             ->orderBy($orderBy, $direction)
-            ->paginate(config('database-schedule.per_page') ?? 10);
+            ->paginate(config('database-schedule.per_page', 10));
 
         return view('schedule::index')
             ->with(compact('schedules'));
