@@ -20,7 +20,7 @@
                 <table class="table table-bordered table-striped table-sm table-hover">
                     <thead>
                     <tr>
-                        {!! Helpers::buildHeader() !!}
+                        {{ Helpers::buildHeader() }}
                     </tr>
                     <tbody>
                     @forelse($schedules as $schedule)
