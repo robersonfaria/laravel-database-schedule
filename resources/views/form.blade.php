@@ -154,6 +154,19 @@
     </div>
 
     <div class="form-group">
+        <label>{{ trans('schedule::schedule.fields.log_filename') }}</label>
+        <input type="text" class="form-control @error('log_filename') is-invalid @enderror" name="log_filename"
+               id="log_file"
+               value="{{ old('log_filename', $schedule->log_filename ?? '') }}">
+        @error('log_filename')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+        <small id="logFilenameHelpBlock" class="form-text text-muted">
+            {{ trans('schedule::schedule.messages.help-log-filename') }}
+        </small>
+    </div>
+
+    <div class="form-group">
         <label>{{ trans('schedule::schedule.fields.webhook_before') }}</label>
         <input type="text" class="form-control @error('webhook_before') is-invalid @enderror" name="webhook_before"
                id="webhook_before"
