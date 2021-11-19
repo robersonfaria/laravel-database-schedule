@@ -2,33 +2,35 @@
 
 namespace RobersonFaria\DatabaseSchedule\View;
 
+use Illuminate\Support\HtmlString;
+
 class Helpers
 {
-    public static function buildHeader()
+    public static function buildHeader(): HtmlString
     {
-        $route = route(config('database-schedule.route.name', 'database-schedule') . '.index');
-
         $header = '';
-
         foreach (['command', 'arguments', 'options', 'expression', 'created_at', 'updated_at', 'status', 'actions'] as $column) {
             $caption = static::highlight($column, trans("schedule::schedule.fields.$column"));
-            $otherDirection = request()->get('direction') === 'asc' ? 'desc' : 'asc';
+            $direction = request()->get('direction') === 'asc' ? 'desc' : 'asc';
             if ($column === 'arguments' || $column === 'actions') {
-                $header .= "<th class=\"text-center text-nowrap\">$caption</th>";
+                $header .= sprintf('<th class="text-center text-nowrap">%s</th>', $caption);
             } else {
-                $header .= "<th class=\"text-center text-nowrap\"><a href=\"$route?orderBy=$column&direction=$otherDirection\">$caption</a></th>";
+                $routeName = config('database-schedule.route.name', 'database-schedule') . '.index';
+                $params = ['orderBy' => $column, 'direction' => $direction];
+                $route = route($routeName, $params);
+                $header .= sprintf('<th class="text-center text-nowrap"><a href="%s">%s</a></th>', $route, $caption);
             }
         }
 
-        return $header;
+        return new HtmlString($header);
     }
 
 
-    public static function highlight($orderBy, $caption)
+    private static function highlight($orderBy, $caption): string
     {
         if (request()->has('orderBy') && request()->get('orderBy') === $orderBy) {
-            $dir = request()->get('direction') === 'asc' ? 'up' : 'down';
-            return $caption . '<i class="bi bi-sort-alpha-'.$dir.'"></i>';
+            $direction = request()->get('direction') === 'asc' ? 'up' : 'down';
+            return sprintf('%s<i class="bi bi-sort-alpha-%s"></i>', $caption, $direction);
         }
 
         return $caption;
