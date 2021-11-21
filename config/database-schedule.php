@@ -12,6 +12,7 @@ return [
         'schedule_histories' => 'schedule_histories'
     ],
     'model' => Schedule::class,
+    'enable_groups' => env('SCHEDULE_ENABLE_GROUPS', false),
     'timezone' => env('SCHEDULE_TIMEZONE', config('app.timezone')),
     'middleware' => 'web',
     'guard' => 'web',

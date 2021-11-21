@@ -153,10 +153,25 @@
         @endif
     </div>
 
+    @if(config('database-schedule.enable_groups', false))
+        <div class="form-group">
+            <label>{{ trans('schedule::schedule.fields.groups') }}</label>
+            <input type="text" class="form-control @error('groups') is-invalid @enderror" name="groups"
+                   id="groups"
+                   value="{{ old('groups', $schedule->groups ?? '') }}">
+            @error('groups')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            <small id="groupsHelpBlock" class="form-text text-muted">
+                {{ trans('schedule::schedule.messages.help-type', ['type' => strtolower(trans('schedule::schedule.fields.groups'))]) }}
+            </small>
+        </div>
+    @endif
+
     <div class="form-group">
         <label>{{ trans('schedule::schedule.fields.log_filename') }}</label>
         <input type="text" class="form-control @error('log_filename') is-invalid @enderror" name="log_filename"
-               id="log_file"
+               id="log_filename"
                value="{{ old('log_filename', $schedule->log_filename ?? '') }}">
         @error('log_filename')
             <div class="invalid-feedback">{{ $message }}</div>

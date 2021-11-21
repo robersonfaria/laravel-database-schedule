@@ -30,7 +30,8 @@ return [
         'run_in_background' => 'Run in background',
         'created_at' => 'Created At',
         'updated_at' => 'Updated At',
-        'never' => 'Never'
+        'never' => 'Never',
+        'groups' => 'Groups'
     ],
     'messages' => [
         'no-records-found' => 'No records found.',
@@ -42,6 +43,7 @@ return [
         'custom-command-here' => 'Custom Command here (e.g. `cat /proc/cpuinfo` or `artisan db:migrate`)',
         'help-cron-expression' => 'If necessary click here and use a tool to facilitate the creation of the cron expression',
         'help-log-filename' => 'If log file is set, the log messages from this cron are written to storage/logs/<log filename>.log',
+        'help-type' => 'Multiple :type can be specified separated by commas',
         'attention-type-function' => "ATTENTION: parameters of the type 'function' are executed before the execution of the scheduling and its return is passed as parameter. Use with care, it can break your job",
         'delete_cronjob' => 'Delete cronjob',
         'delete_cronjob_confirm' => 'Do you really want to delete the cronjob ":cronjob"?'
@@ -60,5 +62,9 @@ return [
         'delete' => 'Delete',
         'history' => 'History',
         'cancel' => 'Cancel'
+    ],
+    'validation' => [
+        'cron' => 'The field must be filled in the cron expression format.',
+        'regex' => trans('validation.alpha_dash') . ' ' . 'Comma is also allowed.'
     ]
 ];
