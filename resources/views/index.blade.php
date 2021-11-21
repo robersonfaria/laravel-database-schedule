@@ -53,6 +53,7 @@
                                 @endif
                             </td>
                             <td class="text-center">{{ $schedule->expression }}</td>
+                            <td class="text-center">{{ $schedule->environments }}</td>
                             <td class="text-center">{{ $schedule->created_at }}</td>
                             <td class="text-center">{{ $schedule->created_at == $schedule->updated_at ? trans('schedule::schedule.fields.never') : $schedule->updated_at }}</td>
                             <td class="text-center {{ $schedule->status ? 'text-success' : 'text-secondary' }}">

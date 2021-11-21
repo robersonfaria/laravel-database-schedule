@@ -36,7 +36,8 @@ class Schedule extends Model
         'log_error',
         'status',
         'run_in_background',
-        'log_filename'
+        'log_filename',
+        'environments'
     ];
 
     protected $attributes = [
@@ -47,7 +48,7 @@ class Schedule extends Model
 
     protected $casts = [
         'params' => 'array',
-        'options' => 'array',
+        'options' => 'array'
     ];
 
     /**

@@ -6,10 +6,22 @@ use Illuminate\Support\HtmlString;
 
 class Helpers
 {
+    private static $columns = [
+        'command',
+        'arguments',
+        'options',
+        'expression',
+        'environments',
+        'created_at',
+        'updated_at',
+        'status',
+        'actions'
+    ];
+
     public static function buildHeader(): HtmlString
     {
         $header = '';
-        foreach (['command', 'arguments', 'options', 'expression', 'created_at', 'updated_at', 'status', 'actions'] as $column) {
+        foreach (static::$columns as $column) {
             $caption = static::highlight($column, trans("schedule::schedule.fields.$column"));
             $direction = request()->get('direction') === 'asc' ? 'desc' : 'asc';
             if ($column === 'arguments' || $column === 'actions') {
