@@ -68,7 +68,7 @@ class ScheduleRequest extends FormRequest
     {
         return [
             'expression.cron' => trans('schedule::schedule.validation.cron'),
-            'environments.regex' => trans('schedule::schedule.validation.environments')
+            'environments.regex' => trans('schedule::schedule.validation.regex')
         ];
     }
 }

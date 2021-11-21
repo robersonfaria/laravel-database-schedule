@@ -161,8 +161,8 @@
         @error('environments')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
-        <small id="logFilenameHelpBlock" class="form-text text-muted">
-            {{ trans('schedule::schedule.messages.help-environments') }}
+        <small id="environmentsHelpBlock" class="form-text text-muted">
+            {{ trans('schedule::schedule.messages.help-type', ['type' => strtolower(trans('schedule::schedule.fields.environments'))]) }}
         </small>
     </div>
 
