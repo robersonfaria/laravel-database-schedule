@@ -8,6 +8,9 @@
                 <small><code>
                         {{ trans('schedule::schedule.messages.timezone') }}{{ config('database-schedule.timezone') }}
                     </code></small>
+                    <span style="float: right;">
+                        <a href="{{ config('app.url', '/') }}"><i class="bi bi-house-fill"></i> {{ trans('schedule::schedule.titles.back_to_application') }}</a>
+                    </span>
             </div>
             <div class="card-body table-responsive"
                  x-data="{

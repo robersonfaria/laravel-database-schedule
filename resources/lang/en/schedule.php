@@ -4,7 +4,8 @@ return [
         'list' => 'Schedule List',
         'create' => 'Create new schedule',
         'edit' => 'Edit schedule',
-        'show' => 'Show run history'
+        'show' => 'Show run history',
+        'back_to_application' => 'Back to application'
     ],
     'fields' => [
         'command' => 'Command',
