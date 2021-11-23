@@ -12,13 +12,20 @@ return [
         'schedule_histories' => 'schedule_histories'
     ],
     'model' => Schedule::class,
+
     'timezone' => env('SCHEDULE_TIMEZONE', config('app.timezone')),
     'middleware' => 'web',
     'guard' => 'web',
+
     /**
      * If restricted_access is true, the user must be authenticated and meet the definition of `viewDatabaseSchedule` gate
      */
     'restricted_access' => env('SCHEDULE_RESTRICTED_ACCESS', true),
+
+    /**
+     * If you have a lot of jobs, you can group them for easier managing of jobs.
+     */
+    'enable_groups' => env('SCHEDULE_ENABLE_GROUPS', false),
 
     /**
      * Cache settings

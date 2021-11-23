@@ -52,6 +52,10 @@ class Schedule
             //ensure output is being captured to write history
             $event->storeOutput();
 
+            if($task->environments) {
+                $event->environments(explode(',', $task->environments));
+            }
+
             if ($task->even_in_maintenance_mode) {
                 $event->evenInMaintenanceMode();
             }
