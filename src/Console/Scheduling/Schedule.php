@@ -1,4 +1,5 @@
 <?php
+
 namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
@@ -23,8 +24,7 @@ class Schedule
     public function execute()
     {
         foreach ($this->tasks as $task) {
-            Log::info("asdf");
-            $event = $this->dispatch($task);
+            $this->dispatch($task);
         }
     }
 
