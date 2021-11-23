@@ -4,4 +4,3 @@
 
 # php code sniffer
 .php_cs.cache
-composer.lock
