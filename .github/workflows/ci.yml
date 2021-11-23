@@ -36,4 +36,6 @@ jobs:
       - uses: php-actions/composer@v5 # or alternative dependency management
       - uses: php-actions/phpunit@v3
         with:
-          configuration: ./phpunit.xml
+          bootstrap: vendor/autoload.php
+          configuration: phpunit.xml
+          args: --coverage-text
