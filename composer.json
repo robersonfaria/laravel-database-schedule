@@ -7,6 +7,11 @@
     "php": "^7.0|^8.0",
     "laravel/framework": "6.*|7.*|8.*"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "orchestra/testbench": "^6.23",
+    "laravel/legacy-factories": "^1.1"
+  },
   "authors": [
     {
       "name": "Roberson Faria",
@@ -18,6 +23,11 @@
       "RobersonFaria\\DatabaseSchedule\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "RobersonFaria\\DatabaseSchedule\\Tests\\": "tests/"
+    }
+  },
   "extra": {
     "laravel": {
       "providers": [
@@ -26,5 +36,10 @@
     }
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "scripts": {
+    "post-autoload-dump": [
+      "@php ./vendor/bin/testbench package:discover --ansi"
+    ]
+  }
 }

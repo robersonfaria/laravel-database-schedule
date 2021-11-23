@@ -8,18 +8,36 @@ use Illuminate\Support\Facades\Log;
 
 class Schedule
 {
+    /**
+     * @var BaseSchedule
+     */
+    private $schedule;
+
     public function __construct(ScheduleService $scheduleService, BaseSchedule $schedule)
     {
         $tasks = $scheduleService->getActives();
 
         foreach ($tasks as $task) {
+           $this->dispatch($task);
+        }
+        $this->schedule = $schedule;
+    }
+
+    /**
+     * @param $task
+     * @throws \Exception
+     */
+    private function dispatch($task)
+    {
+        $model = config('database-schedule.model');
+        if ($task instanceof $model) {
             // @var Event $event
             if ($task->command === 'custom') {
                 $command = $task->command_custom;
-                $event = $schedule->exec($command);
+                $event = $this->schedule->exec($command);
             } else {
                 $command = $task->command;
-                $event = $schedule->command(
+                $event = $this->schedule->command(
                     $command,
                     $task->getArguments() + $task->getOptions()
                 );
@@ -72,7 +90,7 @@ class Schedule
             $event->onSuccess(
                 function () use ($task, $event, $command, $logChannel) {
                     Log::stack([$logChannel])->info(file_get_contents($event->output));
-                    if($task->log_success) {
+                    if ($task->log_success) {
                         $this->createHistoryEntry($task, $event, $command);
                     }
                 }
@@ -80,12 +98,14 @@ class Schedule
             $event->onFailure(
                 function () use ($task, $event, $command, $logChannel) {
                     Log::stack([$logChannel])->critical(file_get_contents($event->output));
-                    if($task->log_error) {
+                    if ($task->log_error) {
                         $this->createHistoryEntry($task, $event, $command);
                     }
                 }
             );
             unset($event);
+        } else {
+            throw new \Exception('Task with invalid instance type');
         }
     }
 

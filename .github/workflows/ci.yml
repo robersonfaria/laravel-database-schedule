@@ -6,6 +6,7 @@ on:
       - "**.php"
       - "phpcs.xml"
       - ".github/workflows/phpcs.yml"
+  push
 
 jobs:
   phpcs:
@@ -27,3 +28,10 @@ jobs:
           files: "**.php" # you may customize glob as needed
           phpcs_path: php phpcs.phar
           standard: phpcs.xml
+
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v5 # or alternative dependency management
+      - uses: php-actions/phpunit@v3

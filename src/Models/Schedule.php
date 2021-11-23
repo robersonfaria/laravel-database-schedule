@@ -3,13 +3,14 @@
 namespace RobersonFaria\DatabaseSchedule\Models;
 
 use Illuminate\Console\Scheduling\ManagesFrequencies;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;
 
 class Schedule extends Model
 {
-    use ManagesFrequencies, SoftDeletes;
+    use ManagesFrequencies, SoftDeletes, HasFactory;
 
     /**
      * The database table used by the model.

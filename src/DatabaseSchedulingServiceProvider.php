@@ -28,7 +28,7 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
 
         Route::model('schedule', config('database-schedule.model'));
 
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'schedule');
 
