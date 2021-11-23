@@ -13,18 +13,23 @@ class Schedule
      */
     private $schedule;
 
+    private $tasks;
+
     public function __construct(ScheduleService $scheduleService, BaseSchedule $schedule)
     {
-        $tasks = $scheduleService->getActives();
-
-        foreach ($tasks as $task) {
-           $this->dispatch($task);
-        }
+        $this->tasks = $scheduleService->getActives();
         $this->schedule = $schedule;
     }
 
+    public function execute()
+    {
+        foreach ($this->tasks as $task) {
+            Log::info("asdf");
+            $event = $this->dispatch($task);
+        }
+    }
+
     /**
-     * @param $task
      * @throws \Exception
      */
     private function dispatch($task)
@@ -42,7 +47,6 @@ class Schedule
                     $task->getArguments() + $task->getOptions()
                 );
             }
-
             $event->cron($task->expression);
 
             //ensure output is being captured to write history
@@ -82,30 +86,42 @@ class Schedule
                 $event->onOneServer();
             }
 
-            $logChannel = $channel = Log::build([
-                'driver' => 'single',
-                'path' => $task->log_filename ? storage_path('logs/' . $task->log_filename . '.log') : null,
-            ]);
-
             $event->onSuccess(
-                function () use ($task, $event, $command, $logChannel) {
-                    Log::stack([$logChannel])->info(file_get_contents($event->output));
+                function () use ($task, $event, $command) {
+                    $this->createLogFile($task, $event);
                     if ($task->log_success) {
                         $this->createHistoryEntry($task, $event, $command);
                     }
                 }
             );
+
             $event->onFailure(
-                function () use ($task, $event, $command, $logChannel) {
-                    Log::stack([$logChannel])->critical(file_get_contents($event->output));
+                function () use ($task, $event, $command) {
+                    $this->createLogFile($task, $event, 'critical');
                     if ($task->log_error) {
                         $this->createHistoryEntry($task, $event, $command);
                     }
                 }
             );
+
+            $event->after(function () use ($event) {
+                unlink($event->output);
+            });
+
             unset($event);
         } else {
             throw new \Exception('Task with invalid instance type');
+        }
+    }
+
+    private function createLogFile($task, $event, $type = 'info')
+    {
+        if ($task->log_filename) {
+            $logChannel = Log::build([
+                'driver' => 'single',
+                'path' => storage_path('logs/' . $task->log_filename . '.log'),
+            ]);
+            Log::stack([$logChannel])->$type(file_get_contents($event->output));
         }
     }
 

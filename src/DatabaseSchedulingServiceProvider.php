@@ -3,6 +3,7 @@
 namespace RobersonFaria\DatabaseSchedule;
 
 use Cron\CronExpression;
+use RobersonFaria\DatabaseSchedule\Console\Commands\PHPUnitTestJobCommand;
 use RobersonFaria\DatabaseSchedule\View\Helpers;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Route;
@@ -62,11 +63,13 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
         }
 
         $this->app->resolving(BaseSchedule::class, function ($schedule) {
-            return app(Schedule::class, ['schedule' => $schedule]);
+            $schedule = app(Schedule::class, ['schedule' => $schedule]);
+            return $schedule->execute();
         });
 
         $this->commands([
             TestJobCommand::class,
+            PHPUnitTestJobCommand::class,
             ScheduleClearCacheCommand::class,
         ]);
     }
