@@ -36,4 +36,4 @@ jobs:
       - uses: php-actions/composer@v5 # or alternative dependency management
       - uses: php-actions/phpunit@v3
         with:
-          command: tests/ --colors
+          configuration: ./phpunit.xml
