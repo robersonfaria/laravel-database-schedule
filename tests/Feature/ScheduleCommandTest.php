@@ -1,8 +1,5 @@
 <?php
-
-
 namespace RobersonFaria\DatabaseSchedule\Tests\Feature;
-
 
 use Illuminate\Support\Facades\Storage;
 use RobersonFaria\DatabaseSchedule\Models\Schedule;
@@ -11,7 +8,7 @@ use RobersonFaria\DatabaseSchedule\Tests\TestCase;
 class ScheduleCommandTest extends TestCase
 {
 
-    public function test_inspire_test_command()
+    public function testInspireTestCommand()
     {
         $task = factory(Schedule::class)
             ->create([
@@ -29,7 +26,7 @@ class ScheduleCommandTest extends TestCase
         );
     }
 
-    public function test_command_with_required_argument()
+    public function testCommandWithRequiredArgument()
     {
         $task = factory(Schedule::class)
             ->create([
@@ -59,7 +56,7 @@ class ScheduleCommandTest extends TestCase
         });
     }
 
-    public function test_command_with_optional_argument()
+    public function testCommandWithOptionalArgument()
     {
         $task = factory(Schedule::class)
             ->create([

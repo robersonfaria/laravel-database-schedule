@@ -4,7 +4,7 @@ namespace RobersonFaria\DatabaseSchedule\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class PHPUnitTestJobCommand extends Command
+class PhpUnitTestJobCommand extends Command
 {
     /**
      * The name and signature of the console command.

@@ -32,7 +32,7 @@ class ScheduleCommandsTest extends TestCase
         });
     }
 
-    public function test_run_inspire_command()
+    public function testRunInspireCommand()
     {
         factory(Schedule::class)
             ->create([
@@ -52,7 +52,7 @@ class ScheduleCommandsTest extends TestCase
         $scheduleService->execute();
     }
 
-    public function test_run_inspire_with_arguments()
+    public function testRunInspireWithArguments()
     {
         factory(Schedule::class)
             ->create([
@@ -73,7 +73,7 @@ class ScheduleCommandsTest extends TestCase
         $scheduleService->execute();
     }
 
-    public function test_run_inspire_with_optional_arguments()
+    public function testRunInspireWithOptionalArguments()
     {
         factory(Schedule::class)
             ->create([
@@ -94,7 +94,7 @@ class ScheduleCommandsTest extends TestCase
         $scheduleService->execute();
     }
 
-    public function test_run_inspire_with_options_boolean()
+    public function testRunInspireWithOptionsBoolean()
     {
         factory(Schedule::class)
             ->create([

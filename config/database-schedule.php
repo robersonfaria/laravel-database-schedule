@@ -90,7 +90,7 @@ return [
             'queue:*',
             'schedule:*',
             'view:*',
-//            'phpunit:*'
+            'phpunit:*'
         ]
     ],
 

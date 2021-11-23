@@ -7,7 +7,7 @@ use RobersonFaria\DatabaseSchedule\Tests\TestCase;
 
 class PhpUnitDatabaseTest extends TestCase
 {
-    public function test_database_and_factory_works()
+    public function testDatabaseAndFactoryWorks()
     {
         factory(Schedule::class, 2)->create();
 
