@@ -6,7 +6,7 @@ on:
       - "**.php"
       - "phpcs.xml"
       - ".github/workflows/phpcs.yml"
-  push
+  push:
 
 jobs:
   phpcs:
