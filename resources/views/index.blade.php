@@ -17,16 +17,19 @@
                  route: ''
             }">
                 @include('schedule::delete-modal')
+                    <form id="schedule-filter-form"  method="POST" action="{{ route(config('database-schedule.route.name', 'database-schedule') . '.filter') }}">@csrf</form>
+                    <form id="schedule-filter-reset" method="POST" action="{{ route(config('database-schedule.route.name', 'database-schedule') . '.filter-reset') }}">@csrf</form>
 
-                @if ($schedules->isEmpty())
-                    <p> {{ trans('schedule::schedule.messages.no-records-found') }} </p>
-                @else
                     <table class="table table-bordered table-striped table-sm table-hover">
                         <thead>
-                        <tr>
                             {{ Helpers::buildHeader() }}
-                        </tr>
+                            {{ Helpers::buildFilter() }}
                         <tbody>
+                        @if ($schedules->isEmpty())
+                            <tr>
+                                <td colspan="100%"> {{ trans('schedule::schedule.messages.no-records-found') }} </td>
+                            </tr>
+                        @else
                         @foreach($schedules as $schedule)
                             <tr>
                                 <td>{{ $schedule->command }}@if ($schedule->command == 'custom')
@@ -64,6 +67,7 @@
                                 <td class="text-center">{{ $schedule->created_at == $schedule->updated_at ? trans('schedule::schedule.fields.never') : $schedule->updated_at }}</td>
                                 <td class="text-center {{ $schedule->status ? 'text-success' : 'text-secondary' }}">
                                     {{ $schedule->status ? trans('schedule::schedule.status.active') : trans('schedule::schedule.status.inactive') }}
+                                    {{ $schedule->deleted_at ? (', ' . trans('schedule::schedule.status.trashed')) : '' }}
                                 </td>
                                 <td class="text-center">
                                     <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@show', $schedule) }}"
@@ -85,13 +89,22 @@
                                                class="bi {{ ($schedule->status ? 'bi-pause' : 'bi-play') }}"></i>
                                         </button>
                                     </form>
-                                    <button
-                                            x-on:click="message=messageTemplate.replace(':cronjob', '{{ $schedule->command }}'); route=routeTemplate.replace('#ID#', {{ $schedule->id }})"
-                                            type="button" class="btn btn-danger btn-sm"
-                                            data-toggle="modal"
-                                            data-target="#delete-modal">
-                                        <i title="{{ trans('schedule::schedule.buttons.delete') }}" class="bi bi-trash"></i>
-                                    </button>
+                                    @if ($schedule->deleted_at)
+                                        <form action="{{ route(config('database-schedule.route.name', 'database-schedule') . '.restore', ['thrashed_schedule' => $schedule->id]) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i title="{{ trans('schedule::schedule.buttons.restore') }}" class="bi bi-recycle"></i>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <button
+                                                x-on:click="message=messageTemplate.replace(':cronjob', '{{ $schedule->command }}'); route=routeTemplate.replace('#ID#', {{ $schedule->id }})"
+                                                type="button" class="btn btn-danger btn-sm"
+                                                data-toggle="modal"
+                                                data-target="#delete-modal">
+                                            <i title="{{ trans('schedule::schedule.buttons.delete') }}" class="bi bi-trash"></i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

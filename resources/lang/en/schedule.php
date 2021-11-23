@@ -50,7 +50,8 @@ return [
     ],
     'status' => [
         'active' => 'Active',
-        'inactive' => 'Inactive'
+        'inactive' => 'Inactive',
+        'trashed' => 'Trashed',
     ],
     'buttons' => [
         'create' => 'Create New',
@@ -61,7 +62,8 @@ return [
         'activate' => 'Activate',
         'delete' => 'Delete',
         'history' => 'History',
-        'cancel' => 'Cancel'
+        'cancel' => 'Cancel',
+        'restore' => 'Restore'
     ],
     'validation' => [
         'cron' => 'The field must be filled in the cron expression format.',

@@ -11,6 +11,14 @@ class Schedule extends Model
 {
     use ManagesFrequencies, SoftDeletes;
 
+    public const SESSION_KEY_ORDER_BY = 'schedule_order_by';
+    public const SESSION_KEY_DIRECTION = 'schedule_order_by_direction';
+    public const SESSION_KEY_FILTERS = 'schedule_filters';
+
+    public const STATUS_INACTIVE = '0';
+    public const STATUS_ACTIVE = '1';
+    public const STATUS_TRASHED = '2';
+
     /**
      * The database table used by the model.
      *
@@ -69,6 +77,12 @@ class Schedule extends Model
         return $this->hasMany(ScheduleHistory::class, 'schedule_id', 'id');
     }
 
+
+    public function scopeInactive($query)
+    {
+        return $query->where('status', false);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', true);
@@ -112,5 +126,13 @@ class Schedule extends Model
         }
 
         return $options;
+    }
+
+    public static function getGroups()
+    {
+        return static::whereNotNull('groups')
+            ->groupBy('groups')
+            ->get('groups')
+            ->pluck('groups', 'groups');
     }
 }
