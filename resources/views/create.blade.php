@@ -1,7 +1,7 @@
 @extends('schedule::layout.master')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         @include('schedule::messages')
         <form action="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@store') }}" method="POST">
             @csrf
