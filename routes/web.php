@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/{schedule}/status/{status}', 'ScheduleController@status')
     ->name(config('database-schedule.route.name', 'database-schedule') . '.status');
 
-Route::get('/', function() {
+Route::get('/', function () {
     return redirect()->route(config('database-schedule.route.name', 'database-schedule') . '.index');
 });
 
@@ -36,4 +36,3 @@ Route::bind('thrashed_schedule', function ($id) {
     $schedule = app(config('database-schedule.model'));
     return $schedule::onlyTrashed()->find($id);
 });
-

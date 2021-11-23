@@ -40,8 +40,7 @@ class ScheduleCommandsTest extends TestCase
             ]);
 
 
-
-        $this->mock(\Illuminate\Console\Scheduling\Schedule::class, function (Mockery\MockInterface $mock){
+        $this->mock(\Illuminate\Console\Scheduling\Schedule::class, function (Mockery\MockInterface $mock) {
             $mock->shouldReceive('command')
                 ->once()
                 ->with('inspire', [])
@@ -100,7 +99,7 @@ class ScheduleCommandsTest extends TestCase
             ->create([
                 'command' => 'inspire',
                 'options' => [
-                    "argDisabledTrue"=>"on"
+                    "argDisabledTrue" => "on"
                 ]
             ]);
 

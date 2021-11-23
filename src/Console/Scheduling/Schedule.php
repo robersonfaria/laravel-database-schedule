@@ -1,5 +1,4 @@
 <?php
-
 namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
@@ -52,7 +51,7 @@ class Schedule
             //ensure output is being captured to write history
             $event->storeOutput();
 
-            if($task->environments) {
+            if ($task->environments) {
                 $event->environments(explode(',', $task->environments));
             }
 

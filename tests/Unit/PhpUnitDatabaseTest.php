@@ -13,5 +13,4 @@ class PhpUnitDatabaseTest extends TestCase
 
         $this->assertEquals(2, Schedule::all()->count());
     }
-
 }

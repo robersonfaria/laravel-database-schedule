@@ -19,14 +19,14 @@ class ScheduleController extends Controller
         $schedule = app(config('database-schedule.model'));
         $schedules = $schedule::query();
 
-				$orderBy = request()->input('orderBy')
-					?? session()->get(Schedule::SESSION_KEY_ORDER_BY)
-					?? config('database-schedule.default_ordering', 'created_at');
-				$direction = request()->input('direction')
-					?? session()->get(Schedule::SESSION_KEY_DIRECTION)
-					?? config('database-schedule.default_ordering_direction', 'DESC');
+        $orderBy = request()->input('orderBy')
+            ?? session()->get(Schedule::SESSION_KEY_ORDER_BY)
+            ?? config('database-schedule.default_ordering', 'created_at');
+        $direction = request()->input('direction')
+            ?? session()->get(Schedule::SESSION_KEY_DIRECTION)
+            ?? config('database-schedule.default_ordering_direction', 'DESC');
 
-				session()->put(Schedule::SESSION_KEY_ORDER_BY, $orderBy);
+        session()->put(Schedule::SESSION_KEY_ORDER_BY, $orderBy);
         session()->put(Schedule::SESSION_KEY_DIRECTION, $direction);
 
         foreach (session()->get(Schedule::SESSION_KEY_FILTERS, []) as $column => $value) {
@@ -41,24 +41,24 @@ class ScheduleController extends Controller
             } else if ($column === 'command') {
                 // also search in job descriptions:
                 $schedules->where(function ($query) use ($value) {
-                    $query->orWhere('command', 'like', '%'.$value.'%');
+                    $query->orWhere('command', 'like', '%' . $value . '%');
 
                     $commands = (new CommandService())->get()->filter(function ($command) use ($value) {
                         return false !== stristr($command->description, $value);
                     })->pluck('name');
 
                     foreach ($commands as $command) {
-                        $query->orWhere('command', 'like', '%'.$command .'%');
+                        $query->orWhere('command', 'like', '%' . $command . '%');
                     }
                 });
             } else if ($value) {
-                $schedules->where($column, 'like', '%'.$value.'%');
+                $schedules->where($column, 'like', '%' . $value . '%');
             }
         }
 
-				$schedules = $schedules
-					->orderBy($orderBy, $direction)
-					->paginate(config('database-schedule.per_page', 10));
+        $schedules = $schedules
+            ->orderBy($orderBy, $direction)
+            ->paginate(config('database-schedule.per_page', 10));
 
         return view('schedule::index')->with(compact('schedules', 'orderBy', 'direction'));
     }
@@ -218,7 +218,7 @@ class ScheduleController extends Controller
 
     public function filterReset()
     {
-				session()->forget(Schedule::SESSION_KEY_ORDER_BY);
+        session()->forget(Schedule::SESSION_KEY_ORDER_BY);
         session()->forget(Schedule::SESSION_KEY_DIRECTION);
         session()->forget(Schedule::SESSION_KEY_FILTERS);
 
