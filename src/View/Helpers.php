@@ -20,13 +20,19 @@ class Helpers
         'actions',
     ];
 
+    public static function getColumns()
+    {
+        if (config('database-schedule.enable_groups', false)) {
+            return static::$columns;
+        }
+
+        return array_diff(static::$columns, ['groups']);
+    }
+
     public static function buildHeader(): HtmlString
     {
         $header = '<tr>';
-        foreach (static::$columns as $column) {
-            if ($column === 'groups' && config('database-schedule.enable_groups', false) === false) {
-                continue;
-            }
+        foreach (static::getColumns() as $column) {
             $caption = static::highlight($column, trans("schedule::schedule.fields.$column"));
             $direction = session()->get(Schedule::SESSION_KEY_DIRECTION) === 'asc' ? 'desc' : 'asc';
             if ($column === 'arguments' || $column === 'actions') {
@@ -51,7 +57,7 @@ class Helpers
 
         $filters = session()->get(Schedule::SESSION_KEY_FILTERS);
 
-        foreach (static::$columns as $column) {
+        foreach (static::getColumns() as $column) {
             switch($column) {
                 case 'arguments':
                     $content = '';
@@ -66,6 +72,14 @@ class Helpers
                         'js' => $js,
                         'options' => $schedule::getGroups(),
                         'selected' => $filters['groups'] ?? null,
+                    ]);
+                    break;
+                case 'environments':
+                    $content = view('schedule::dropdown', [
+                        'name' => 'filters[environments]',
+                        'js' => $js,
+                        'options' => $schedule::getEnvironments(),
+                        'selected' => $filters['environments'] ?? null,
                     ]);
                     break;
                 case 'status':

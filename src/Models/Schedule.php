@@ -136,4 +136,12 @@ class Schedule extends Model
             ->get('groups')
             ->pluck('groups', 'groups');
     }
+
+    public static function getEnvironments()
+    {
+        return static::whereNotNull('environments')
+            ->groupBy('environments')
+            ->get('environments')
+            ->pluck('environments', 'environments');
+    }
 }
