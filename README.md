@@ -68,7 +68,18 @@ protected function gate()
 }
 ```
 
-#### Exemples:
+#### Groups:
+
+If you have a lot of jobs, you can make managing them easier by enabling the groups feature in `config/database-schedule.php`:
+
+```php
+    /**
+     * If you have a lot of jobs, you can group them for easier managing of jobs.
+     */
+    'enable_groups' => true,
+```
+
+#### Examples:
 
 If you want to limit access to a route to users who have a certain role, you can do so.
 ```php
