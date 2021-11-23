@@ -13,6 +13,7 @@ class Helpers
         'options',
         'expression',
         'groups',
+        'environments',
         'created_at',
         'updated_at',
         'status',
@@ -23,7 +24,7 @@ class Helpers
     {
         $header = '<tr>';
         foreach (static::$columns as $column) {
-            if($column === 'groups' && config('database-schedule.enable_groups', false) === false) {
+            if ($column === 'groups' && config('database-schedule.enable_groups', false) === false) {
                 continue;
             }
             $caption = static::highlight($column, trans("schedule::schedule.fields.$column"));

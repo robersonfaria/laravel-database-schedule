@@ -169,6 +169,19 @@
     @endif
 
     <div class="form-group">
+        <label>{{ trans('schedule::schedule.fields.environments') }}</label>
+        <input type="text" class="form-control @error('environments') is-invalid @enderror" name="environments"
+               id="environments"
+               value="{{ old('environments', $schedule->environments ?? '') }}">
+        @error('environments')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+        <small id="environmentsHelpBlock" class="form-text text-muted">
+            {{ trans('schedule::schedule.messages.help-type', ['type' => strtolower(trans('schedule::schedule.fields.environments'))]) }}
+        </small>
+    </div>
+
+    <div class="form-group">
         <label>{{ trans('schedule::schedule.fields.log_filename') }}</label>
         <input type="text" class="form-control @error('log_filename') is-invalid @enderror" name="log_filename"
                id="log_filename"

@@ -31,7 +31,8 @@ class ScheduleRequest extends FormRequest
             'webhook_after' => 'nullable|url',
             'email_output' => 'requiredIf:sendmail_error,1|requiredIf:sendmail_success,1|nullable|email',
             'log_filename' => 'nullable|alpha_dash',
-            'groups' => 'nullable|regex:/^[A-Za-z-_0-9,]*$/'
+            'groups' => 'nullable|regex:/^[A-Za-z-_0-9,]*$/',
+            'environments' => 'nullable|regex:/^[A-Za-z-_0-9,]*$/',
         ];
     }
 
@@ -67,8 +68,9 @@ class ScheduleRequest extends FormRequest
     public function messages()
     {
         return [
-            'validation.cron' => 'The field must be filled in the cron expression format.',
-            'groups.regex' => trans('schedule::schedule.validation.regex')
+            'groups.regex' => trans('schedule::schedule.validation.regex'),
+            'expression.cron' => trans('schedule::schedule.validation.cron'),
+            'environments.regex' => trans('schedule::schedule.validation.regex'),
         ];
     }
 }

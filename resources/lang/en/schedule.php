@@ -4,7 +4,8 @@ return [
         'list' => 'Schedule List',
         'create' => 'Create new schedule',
         'edit' => 'Edit schedule',
-        'show' => 'Show run history'
+        'show' => 'Show run history',
+        'back_to_application' => 'Back to application'
     ],
     'fields' => [
         'command' => 'Command',
@@ -31,7 +32,8 @@ return [
         'created_at' => 'Created At',
         'updated_at' => 'Updated At',
         'never' => 'Never',
-        'groups' => 'Groups'
+        'groups' => 'Groups',
+        'environments' => 'Environments'
     ],
     'messages' => [
         'no-records-found' => 'No records found.',
