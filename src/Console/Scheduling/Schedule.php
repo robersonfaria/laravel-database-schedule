@@ -1,5 +1,4 @@
 <?php
-
 namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
@@ -8,29 +7,51 @@ use Illuminate\Support\Facades\Log;
 
 class Schedule
 {
+    /**
+     * @var BaseSchedule
+     */
+    private $schedule;
+
+    private $tasks;
+
     public function __construct(ScheduleService $scheduleService, BaseSchedule $schedule)
     {
-        $tasks = $scheduleService->getActives();
+        $this->tasks = $scheduleService->getActives();
+        $this->schedule = $schedule;
+    }
 
-        foreach ($tasks as $task) {
+    public function execute()
+    {
+        foreach ($this->tasks as $task) {
+            Log::info("asdf");
+            $event = $this->dispatch($task);
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function dispatch($task)
+    {
+        $model = config('database-schedule.model');
+        if ($task instanceof $model) {
             // @var Event $event
             if ($task->command === 'custom') {
                 $command = $task->command_custom;
-                $event = $schedule->exec($command);
+                $event = $this->schedule->exec($command);
             } else {
                 $command = $task->command;
-                $event = $schedule->command(
+                $event = $this->schedule->command(
                     $command,
                     $task->getArguments() + $task->getOptions()
                 );
             }
-
             $event->cron($task->expression);
 
             //ensure output is being captured to write history
             $event->storeOutput();
 
-            if($task->environments) {
+            if ($task->environments) {
                 $event->environments(explode(',', $task->environments));
             }
 
@@ -68,28 +89,42 @@ class Schedule
                 $event->onOneServer();
             }
 
-            $logChannel = $channel = Log::build([
-                'driver' => 'single',
-                'path' => $task->log_filename ? storage_path('logs/' . $task->log_filename . '.log') : null,
-            ]);
-
             $event->onSuccess(
-                function () use ($task, $event, $command, $logChannel) {
-                    Log::stack([$logChannel])->info(file_get_contents($event->output));
-                    if($task->log_success) {
+                function () use ($task, $event, $command) {
+                    $this->createLogFile($task, $event);
+                    if ($task->log_success) {
                         $this->createHistoryEntry($task, $event, $command);
                     }
                 }
             );
+
             $event->onFailure(
-                function () use ($task, $event, $command, $logChannel) {
-                    Log::stack([$logChannel])->critical(file_get_contents($event->output));
-                    if($task->log_error) {
+                function () use ($task, $event, $command) {
+                    $this->createLogFile($task, $event, 'critical');
+                    if ($task->log_error) {
                         $this->createHistoryEntry($task, $event, $command);
                     }
                 }
             );
+
+            $event->after(function () use ($event) {
+                unlink($event->output);
+            });
+
             unset($event);
+        } else {
+            throw new \Exception('Task with invalid instance type');
+        }
+    }
+
+    private function createLogFile($task, $event, $type = 'info')
+    {
+        if ($task->log_filename) {
+            $logChannel = Log::build([
+                'driver' => 'single',
+                'path' => storage_path('logs/' . $task->log_filename . '.log'),
+            ]);
+            Log::stack([$logChannel])->$type(file_get_contents($event->output));
         }
     }
 

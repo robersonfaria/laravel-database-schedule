@@ -8,7 +8,7 @@ class Authenticate
 {
     public function handle($request, $next)
     {
-        if(config('database-schedule.restricted_access')) {
+        if (config('database-schedule.restricted_access')) {
             $guard = config('database-schedule.guard', 'web');
             if (Gate::check('viewDatabaseSchedule', [$request->user($guard)])) {
                 return $next($request);

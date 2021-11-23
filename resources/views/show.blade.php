@@ -1,7 +1,7 @@
 @extends('schedule::layout.master')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         @include('schedule::messages')
         <div class="card">
             <div class="card-header">{{ trans('schedule::schedule.titles.show') }}</div>

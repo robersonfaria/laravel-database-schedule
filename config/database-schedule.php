@@ -89,7 +89,8 @@ return [
             'make:*',
             'queue:*',
             'schedule:*',
-            'view:*'
+            'view:*',
+            'phpunit:*'
         ]
     ],
 

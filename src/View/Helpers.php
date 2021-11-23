@@ -58,7 +58,7 @@ class Helpers
         $filters = session()->get(Schedule::SESSION_KEY_FILTERS);
 
         foreach (static::getColumns() as $column) {
-            switch($column) {
+            switch ($column) {
                 case 'arguments':
                     $content = '';
                     break;
@@ -99,7 +99,8 @@ class Helpers
                         '<input @blur="%s" value="%s" form="schedule-filter-form" type="text" class="form-control" name="filters[%s]">',
                         $js,
                         $filters[$column] ?? '',
-                        $column);
+                        $column
+                    );
                     break;
             }
 

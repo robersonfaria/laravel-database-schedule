@@ -46,9 +46,8 @@ class CommandService
             'withValue' => [],
             'withoutValue' => []
         ];
-        foreach ($command->getDefinition()->getOptions() as $option)
-        {
-            if($option->acceptValue()) {
+        foreach ($command->getDefinition()->getOptions() as $option) {
+            if ($option->acceptValue()) {
                 $options->withValue[] = (object)[
                     'name' => $option->getName(),
                     'default' => $option->getDefault(),

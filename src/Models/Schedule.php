@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Config;
 
 class Schedule extends Model
 {
-    use ManagesFrequencies, SoftDeletes;
+    use ManagesFrequencies;
+    use SoftDeletes;
 
     public const SESSION_KEY_ORDER_BY = 'schedule_order_by';
     public const SESSION_KEY_DIRECTION = 'schedule_order_by_direction';
@@ -78,7 +79,6 @@ class Schedule extends Model
         return $this->hasMany(ScheduleHistory::class, 'schedule_id', 'id');
     }
 
-
     public function scopeInactive($query)
     {
         return $query->where('status', false);
@@ -94,11 +94,11 @@ class Schedule extends Model
         $arguments = [];
 
         foreach (($this->params ?? []) as $argument => $value) {
-            if(empty($value['value'])) {
+            if (empty($value['value'])) {
                 continue;
             }
             if (isset($value["type"]) && $value['type'] === 'function') {
-                $arguments[$argument] = (string) $value['value']();
+                $arguments[$argument] = (string)$value['value']();
             } else {
                 $arguments[$argument] = $value['value'];
             }
@@ -111,13 +111,13 @@ class Schedule extends Model
     {
         $options = [];
         foreach (($this->options ?? []) as $option => $value) {
-            if(is_array($value) && ($value['value'] ?? null) === null) {
+            if (is_array($value) && ($value['value'] ?? null) === null) {
                 continue;
             }
             $option = '--' . $option;
-            if(is_array($value)) {
+            if (is_array($value)) {
                 if (isset($value["type"]) && $value['type'] === 'function') {
-                    $options[$option] = (string) $value['value']();
+                    $options[$option] = (string)$value['value']();
                 } else {
                     $options[$option] = $value['value'];
                 }
