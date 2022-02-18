@@ -52,7 +52,7 @@ class ScheduleCommandTest extends TestCase
         $events->each(function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
             // This example is for hourly commands.
             $this->assertEquals($task->expression, $event->expression);
-            $this->assertStringEndsWith("phpunit:test argument='this is a argument'", $event->command);
+            $this->assertStringEndsWith("phpunit:test 'this is a argument'", $event->command);
         });
     }
 
@@ -75,7 +75,9 @@ class ScheduleCommandTest extends TestCase
         /** @var \Illuminate\Console\Scheduling\Schedule $schedule */
         $schedule = app()->make(\Illuminate\Console\Scheduling\Schedule::class);
 
-        $events = collect($schedule->events())->filter(function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
+        $events = collect(
+            $schedule->events())->filter(
+                function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
             return stripos($event->command, $task->command);
         });
 
@@ -86,7 +88,10 @@ class ScheduleCommandTest extends TestCase
         $events->each(function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
             // This example is for hourly commands.
             $this->assertEquals($task->expression, $event->expression);
-            $this->assertStringEndsWith("phpunit:test argument='this is a argument' optionalArgument='this is a optional argument'", $event->command);
+            $this->assertStringEndsWith(
+                "phpunit:test 'this is a argument' optionalArgument='this is a optional argument'",
+                $event->command
+            );
         });
     }
 }
