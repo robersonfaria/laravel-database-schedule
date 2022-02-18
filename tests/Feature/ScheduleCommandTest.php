@@ -70,7 +70,7 @@ class ScheduleCommandTest extends TestCase
                         'type' => 'string'
                     ],
                     'optionalArgument' => [
-                        'value' => 'this is a optional argument',
+                        'value' => 'optional argument',
                         'type' => 'string'
                     ]
                 ]
@@ -78,23 +78,26 @@ class ScheduleCommandTest extends TestCase
         /** @var \Illuminate\Console\Scheduling\Schedule $schedule */
         $schedule = app()->make(\Illuminate\Console\Scheduling\Schedule::class);
 
-        $events = collect(
-            $schedule->events())->filter(
+        $events = collect($schedule->events())
+            ->filter(
                 function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
-            return stripos($event->command, $task->command);
-        });
+                    return stripos($event->command, $task->command);
+                }
+            );
 
         if ($events->count() == 0) {
             $this->fail('No events found');
         }
 
-        $events->each(function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
-            // This example is for hourly commands.
-            $this->assertEquals($task->expression, $event->expression);
-            $this->assertStringEndsWith(
-                "phpunit:test 'this is a argument' 'this is a optional argument'",
-                $event->command
-            );
-        });
+        $events->each(
+            function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
+                // This example is for hourly commands.
+                $this->assertEquals($task->expression, $event->expression);
+                $this->assertStringEndsWith(
+                    "phpunit:test 'this is a argument' 'optional argument'",
+                    $event->command
+                );
+            }
+        );
     }
 }

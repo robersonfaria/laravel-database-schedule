@@ -64,7 +64,7 @@ class ScheduleCommandsTest extends TestCase
         $this->mock(\Illuminate\Console\Scheduling\Schedule::class, function (Mockery\MockInterface $mock) {
             $mock->shouldReceive('command')
                 ->once()
-                ->with('inspire', ['test' => '1'])
+                ->with('inspire', ['1'])
                 ->andReturn($this->event);
         });
 
