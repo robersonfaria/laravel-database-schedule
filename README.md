@@ -163,6 +163,10 @@ If you marked the sending of the output by email you will receive an email simil
 
 * Does not record run history when runInBackground is used
 
+## CHANGELOG
+
+[CHANGELOG.md](CHANGELOG.md)
+
 ## Credits
 
 * That library was inspired by the library [therezor/laravel-database-schedule](https://github.com/therezor/laravel-database-schedule)
