@@ -44,7 +44,7 @@ class ScheduleController extends Controller
                     $query->orWhere('command', 'like', '%' . $value . '%');
 
                     $commands = (new CommandService())->get()->filter(function ($command) use ($value) {
-                        return false !== stristr($command->description, $value);
+                        return !empty($value) ? stristr($command->description, $value) : false;
                     })->pluck('name');
 
                     foreach ($commands as $command) {
