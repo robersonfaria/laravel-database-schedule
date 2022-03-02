@@ -68,17 +68,6 @@ protected function gate()
 }
 ```
 
-#### Groups:
-
-If you have a lot of jobs, you can make managing them easier by enabling the groups feature in `config/database-schedule.php`:
-
-```php
-    /**
-     * If you have a lot of jobs, you can group them for easier managing of jobs.
-     */
-    'enable_groups' => true,
-```
-
 #### Examples:
 
 If you want to limit access to a route to users who have a certain role, you can do so.
@@ -89,6 +78,19 @@ Gate::define('viewDatabaseSchedule', function ($user) {
 ```
 
 Basically, if your gate has `return true` access will be allowed, if `return false` access will be restricted.
+
+
+#### Groups:
+
+If you have a lot of jobs, you can make managing them easier by enabling the groups feature in `config/database-schedule.php`:
+
+```php
+    /**
+     * If you have a lot of jobs, you can group them for easier managing of jobs.
+     */
+    'enable_groups' => true,
+```
+This will allow you to filter in the job listing only the jobs belonging to a certain group.
 
 ### Scheduled Task Example
 
@@ -152,16 +154,28 @@ php artisan schedule:run
 
 The console output will look like this
 ```bash
-Running scheduled command: '/usr/bin/php7.2' 'artisan' command:test '1' '2021-02-10 00:00:00' '2021-04-10 00:00:00' > 'path/to/storage/logs/schedule-dcccb62f29f754dc83a86a3d0b59afb00a08fdb3.log' 2>&1
+Running scheduled command: ('/usr/bin/php7.4' 'artisan' command:test 1 '2022-02-02 00:00:00' '2022-04-02 00:00:00' > 'path/to/storage/logs/schedule-8763d2ce5a20ee888dd9d8a7e5a5cfcd4b315375.log' 2>&1 ;
 ```
 
 If you marked the sending of the output by email you will receive an email similar to this one:
 
 ![Mail Output](docs/mail-output.png)
 
-## Known issues:
+## Schedule List
 
-* Does not record run history when runInBackground is used
+You can also list registered and active commands using artisan command:
+
+```bash
+$ php artisan schedule:list
+
++----------------------------------------------------------------------------------------+-----------+-------------+----------------------------+
+| Command                                                                                | Interval  | Description | Next Due                   |
++----------------------------------------------------------------------------------------+-----------+-------------+----------------------------+
+| '/usr/bin/php7.4' 'artisan' inspire                                                    | * * * * * |             | 2022-03-02 17:05:00 +00:00 |
+| '/usr/bin/php7.4' 'artisan' command:test 1 '2022-02-02 00:00:00' '2022-04-02 00:00:00' | * * * * * |             | 2022-03-02 17:05:00 +00:00 |
++----------------------------------------------------------------------------------------+-----------+-------------+----------------------------+
+```
+
 
 ## CHANGELOG
 

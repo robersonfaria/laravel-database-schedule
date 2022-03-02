@@ -98,7 +98,7 @@ class Schedule extends Model
                 continue;
             }
             if (isset($value["type"]) && $value['type'] === 'function') {
-                $arguments[$argument] = (string)$value['value']();
+                eval('$arguments[$argument] = (string) ' .$value['value']);
             } else {
                 $arguments[$argument] = $value['value'];
             }

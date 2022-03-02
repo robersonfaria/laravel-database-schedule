@@ -100,4 +100,42 @@ class ScheduleCommandTest extends TestCase
             }
         );
     }
+
+    public function testCommandWithFunctionTypeArgument()
+    {
+        $task = factory(Schedule::class)
+            ->create([
+                'command' => 'phpunit:test',
+                'params' => [
+                    'argument' => [
+                        'value' => '\Carbon\Carbon::now()->format("Y/m/d");',
+                        'type' => 'function'
+                    ]
+                ]
+            ]);
+        /** @var \Illuminate\Console\Scheduling\Schedule $schedule */
+        $schedule = app()->make(\Illuminate\Console\Scheduling\Schedule::class);
+
+        $events = collect($schedule->events())
+            ->filter(
+                function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
+                    return stripos($event->command, $task->command);
+                }
+            );
+
+        if ($events->count() == 0) {
+            $this->fail('No events found');
+        }
+
+        $events->each(
+            function (\Illuminate\Console\Scheduling\Event $event) use ($task) {
+                // This example is for hourly commands.
+                $this->assertEquals($task->expression, $event->expression);
+                $this->assertStringEndsWith(
+                    "phpunit:test '" . now()->format("Y/m/d") . "'",
+                    $event->command
+                );
+            }
+        );
+    }
 }

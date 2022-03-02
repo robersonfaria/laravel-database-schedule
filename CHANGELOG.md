@@ -9,3 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
  - Arguments fix: details in [pull request](https://github.com/robersonfaria/laravel-database-schedule/pull/51)
+
+## [1.3.1] - 2022-03-02
+
+### Changed
+
+- Update README.md
+
+### Fixed
+
+- Fixed error in running jobs with arguments of type function (test created to validate)
