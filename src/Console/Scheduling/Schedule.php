@@ -43,7 +43,7 @@ class Schedule
                 $command = $task->command;
                 $event = $this->schedule->command(
                     $command,
-                    $task->getArguments() + $task->getOptions()
+                    array_values($task->getArguments()) + $task->getOptions()
                 );
             }
             $event->cron($task->expression);
