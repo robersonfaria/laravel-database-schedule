@@ -48,8 +48,16 @@ class Schedule
                 );
             }
             //Setting user timezone
-            $timezone = ($task->timezone != null)?$task->timezone : Config::get('database-schedule.timezone');
-            $event->cron($task->expression)->timezone($timezone);
+            if($task->timezone != null){
+                $timezone = $task->timezone;    
+            }else{
+                $timezone = config('database-schedule.timezone');    
+            }
+            if($timezone == null){
+                $event->cron($task->expression);
+            }else{
+                $event->cron($task->expression)->timezone($timezone);
+            }
 
             //ensure output is being captured to write history
             $event->storeOutput();
