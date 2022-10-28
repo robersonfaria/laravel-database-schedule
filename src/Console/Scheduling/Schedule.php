@@ -50,12 +50,12 @@ class Schedule
             //Setting user timezone
             if($task->timezone != null){
                 $timezone = $task->timezone;    
-            }else{
+            } else {
                 $timezone = config('database-schedule.timezone');    
             }
             if($timezone == null){
                 $event->cron($task->expression);
-            }else{
+            } else {
                 $event->cron($task->expression)->timezone($timezone);
             }
 
