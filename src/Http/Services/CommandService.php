@@ -44,7 +44,9 @@ class CommandService
     {
         $options = (object)[
             'withValue' => [],
-            'withoutValue' => []
+            'withoutValue' => [
+              'verbose', 'quiet', 'ansi', 'no-ansi',
+            ]
         ];
         foreach ($command->getDefinition()->getOptions() as $option) {
             if ($option->acceptValue()) {
