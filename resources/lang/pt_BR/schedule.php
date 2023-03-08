@@ -12,6 +12,8 @@ return [
         'options' => 'Opções',
         'options_with_value' => 'opções com valor',
         'expression' => 'Experessão Cron',
+        'select-timezone' => 'Selecione um fuso horário',
+        'timezone' => 'Cron fuso horário',
         'output' => 'Saída',
         'even_in_maintenance_mode' => 'Também em modo de manutenção',
         'without_overlapping' => 'Sem sobreposição',
