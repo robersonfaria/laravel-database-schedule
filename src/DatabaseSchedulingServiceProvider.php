@@ -72,6 +72,10 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
             PhpUnitTestJobCommand::class,
             ScheduleClearCacheCommand::class,
         ]);
+
+        Route::bind('schedule', function ($value) {
+            return \RobersonFaria\DatabaseSchedule\Models\Schedule::withTrashed()->where('id', $value)->firstOrFail();
+        });
     }
 
     protected function registerRoutes()
