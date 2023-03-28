@@ -33,6 +33,16 @@ class ScheduleRequest extends FormRequest
             'log_filename' => 'nullable|alpha_dash',
             'groups' => 'nullable|regex:/^[A-Za-z-_0-9,]*$/',
             'environments' => 'nullable|regex:/^[A-Za-z-_0-9,]*$/',
+            'params' => 'present|array',
+            'options' => 'present|array',
+            'sendmail_success' => 'present|boolean',
+            'sendmail_error' => 'present|boolean',
+            'log_success' => 'present|boolean',
+            'log_error' => 'present|boolean',
+            'even_in_maintenance_mode' => 'present|boolean',
+            'without_overlapping' => 'present|boolean',
+            'on_one_server' => 'present|boolean',
+            'run_in_background' => 'present|boolean'
         ];
     }
 
