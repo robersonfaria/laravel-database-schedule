@@ -13,7 +13,7 @@ use Illuminate\Console\Scheduling\Schedule as BaseSchedule;
 use RobersonFaria\DatabaseSchedule\Console\Commands\TestJobCommand;
 use RobersonFaria\DatabaseSchedule\Console\Commands\ScheduleClearCacheCommand;
 use RobersonFaria\DatabaseSchedule\Console\Scheduling\Schedule;
-use RobersonFaria\DatabaseSchedule\Models\Schedule;
+use RobersonFaria\DatabaseSchedule\Models\Schedule as ScheduleModel;
 
 class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServiceProvider
 {
@@ -77,7 +77,7 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
         Route::bind(
             'schedule',
             function ($value) {
-                return Schedule::withTrashed()
+                return ScheduleModel::withTrashed()
                     ->where('id', $value)
                     ->firstOrFail();
             }
