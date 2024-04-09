@@ -5,6 +5,7 @@ namespace RobersonFaria\DatabaseSchedule\Console\Scheduling;
 use RobersonFaria\DatabaseSchedule\Http\Services\ScheduleService;
 use \Illuminate\Console\Scheduling\Schedule as BaseSchedule;
 use Illuminate\Support\Facades\Log;
+use Config;
 
 class Schedule
 {
@@ -46,7 +47,17 @@ class Schedule
                     array_values($task->getArguments()) + $task->getOptions()
                 );
             }
-            $event->cron($task->expression);
+            //Setting user timezone
+            if($task->timezone != null){
+                $timezone = $task->timezone;    
+            } else {
+                $timezone = config('database-schedule.timezone');    
+            }
+            if($timezone == null){
+                $event->cron($task->expression);
+            } else {
+                $event->cron($task->expression)->timezone($timezone);
+            }
 
             //ensure output is being captured to write history
             $event->storeOutput();
