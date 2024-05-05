@@ -127,6 +127,7 @@
                    type="text"
                    placeholder="{{ trans('schedule::schedule.messages.custom-command-here')}}"
                    name="command_custom"
+                   value="{{ old('command_custom', $schedule->command_custom ?? '') }}"
                    class="form-control @error('command_custom') is-invalid @enderror"/>
                 @error('command_custom')
                     <div class="invalid-feedback">{{ $message }}</div>
