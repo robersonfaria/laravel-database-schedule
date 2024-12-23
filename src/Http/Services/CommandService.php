@@ -9,7 +9,7 @@ class CommandService
 {
     public function get(): Collection
     {
-        $commands = collect(app( Artisan::class)->all())->sortKeys();
+        $commands = collect(Artisan::all())->sortKeys();
         $commandsKeys = $commands->keys()->toArray();
         foreach (config('database-schedule.commands.exclude') as $exclude) {
             $commandsKeys = preg_grep("/^$exclude/", $commandsKeys, PREG_GREP_INVERT);
