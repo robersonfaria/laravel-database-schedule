@@ -2,14 +2,14 @@
 
 namespace RobersonFaria\DatabaseSchedule\Http\Services;
 
-use App\Console\Kernel;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Collection;
 
 class CommandService
 {
     public function get(): Collection
     {
-        $commands = collect(app(Kernel::class)->all())->sortKeys();
+        $commands = collect(Artisan::all())->sortKeys();
         $commandsKeys = $commands->keys()->toArray();
         foreach (config('database-schedule.commands.exclude') as $exclude) {
             $commandsKeys = preg_grep("/^$exclude/", $commandsKeys, PREG_GREP_INVERT);
