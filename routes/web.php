@@ -18,7 +18,7 @@ Route::post('/filter', 'ScheduleController@filter')
     ->name(config('database-schedule.route.name', 'database-schedule') . '.filter');
 Route::post('/filter-reset', 'ScheduleController@filterReset')
     ->name(config('database-schedule.route.name', 'database-schedule') . '.filter-reset');
-Route::get('/create2', 'ScheduleController@create')
+Route::get('/create', 'ScheduleController@create')
     ->name(config('database-schedule.route.name', 'database-schedule') . '.create');
 Route::get('/extract', 'ScheduleController@extractFromKernel')
     ->name(config('database-schedule.route.name', 'database-schedule') . '.extract');
