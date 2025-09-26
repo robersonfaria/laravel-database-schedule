@@ -4,6 +4,8 @@ namespace RobersonFaria\DatabaseSchedule\Http\Controllers;
 
 use RobersonFaria\DatabaseSchedule\Http\Requests\ScheduleRequest;
 use RobersonFaria\DatabaseSchedule\Http\Services\CommandService;
+use RobersonFaria\DatabaseSchedule\Http\Services\ImportService;
+use RobersonFaria\DatabaseSchedule\Http\Services\KernelExtractorService;
 use RobersonFaria\DatabaseSchedule\Models\Schedule;
 use RobersonFaria\DatabaseSchedule\View\Helpers;
 
@@ -63,6 +65,9 @@ class ScheduleController extends Controller
         return view('schedule::index')->with(compact('schedules', 'orderBy', 'direction'));
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function filter()
     {
         session()->put(Schedule::SESSION_KEY_FILTERS, request()->input('filters'));
@@ -155,6 +160,11 @@ class ScheduleController extends Controller
         }
     }
 
+    /**
+     * @param Schedule $schedule
+     * @param bool $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function status(Schedule $schedule, bool $status)
     {
         try {
@@ -223,5 +233,40 @@ class ScheduleController extends Controller
         session()->forget(Schedule::SESSION_KEY_FILTERS);
 
         return redirect()->to(Helpers::indexRoute());
+    }
+
+    /**
+     * Extract schedules from Kernel
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     */
+    public function extractFromKernel()
+    {
+        $extractorService = new KernelExtractorService();
+        $extractedSchedules = $extractorService->extract();
+        
+        return view('schedule::extract')
+            ->with(compact('extractedSchedules'));
+    }
+
+    /**
+     * Import selected schedules from kernel extraction
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function importFromKernel(ImportService $importService)
+    {
+        try {
+            $selectedSchedules = request()->input('schedules', []);
+            
+            $importService->importSchedules($selectedSchedules);
+
+            return redirect()->to(Helpers::indexRoute())
+                ->with('success', trans('schedule::schedule.messages.import-success'));
+        } catch (\Exception $e) {
+            report($e);
+            return back()
+                ->with('error', trans('schedule::schedule.messages.import-error') . ' : ' . $e->getMessage());
+        }
     }
 }

@@ -5,7 +5,8 @@ return [
         'create' => 'Create new schedule',
         'edit' => 'Edit schedule',
         'show' => 'Show run history',
-        'back_to_application' => 'Back to application'
+        'back_to_application' => 'Back to application',
+        'extract' => 'Extract Schedules from Kernel'
     ],
     'fields' => [
         'command' => 'Command',
@@ -33,7 +34,8 @@ return [
         'updated_at' => 'Updated At',
         'never' => 'Never',
         'groups' => 'Groups',
-        'environments' => 'Environments'
+        'environments' => 'Environments',
+        'settings' => 'Settings'
     ],
     'messages' => [
         'no-records-found' => 'No records found.',
@@ -48,7 +50,13 @@ return [
         'help-type' => 'Multiple :type can be specified separated by commas',
         'attention-type-function' => "ATTENTION: parameters of the type 'function' are executed before the execution of the scheduling and its return is passed as parameter. Use with care, it can break your job",
         'delete_cronjob' => 'Delete cronjob',
-        'delete_cronjob_confirm' => 'Do you really want to delete the cronjob ":cronjob"?'
+        'delete_cronjob_confirm' => 'Do you really want to delete the cronjob ":cronjob"?',
+        'import-success' => 'Schedules extracted successfully',
+        'import-error' => 'Error extracting schedules',
+        'no-schedules-found' => 'No schedules found in Kernel.',
+        'all-environments' => 'All',
+        'no-overlap' => 'No Overlap',
+        'one-server' => 'One Server'
     ],
     'status' => [
         'active' => 'Active',
@@ -65,7 +73,11 @@ return [
         'delete' => 'Delete',
         'history' => 'History',
         'cancel' => 'Cancel',
-        'restore' => 'Restore'
+        'restore' => 'Restore',
+        'extract_kernel' => 'Extract from Kernel',
+        'select_all' => 'Select All',
+        'select_none' => 'Select None',
+        'import_selected' => 'Import Selected'
     ],
     'validation' => [
         'cron' => 'The field must be filled in the cron expression format.',

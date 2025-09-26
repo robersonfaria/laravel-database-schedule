@@ -122,6 +122,10 @@
                 </div>
             </div>
             <div class="card-footer text-right">
+                <a href="{{ route(config('database-schedule.route.name', 'database-schedule') . '.extract') }}"
+                   class="btn btn-primary">
+                    <i class="bi bi-download"></i> {{ trans('schedule::schedule.buttons.extract_kernel') }}
+                </a>
                 <a href="{{ action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@create') }}"
                    class="btn btn-primary">
                     {{ trans('schedule::schedule.buttons.create') }}
