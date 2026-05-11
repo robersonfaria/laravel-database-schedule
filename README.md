@@ -1,3 +1,8 @@
+> [!WARNING]
+> **This package is no longer actively maintained.**
+> Security vulnerabilities have been reported and will not be patched.
+> **Do not use in production.** Consider alternatives or fork for your own maintenance.
+
 ![Laravel Database Schedule](https://banners.beyondco.de/Laravel%20Database%20Schedule.png?theme=light&packageManager=composer+require&packageName=robersonfaria%2Flaravel-database-schedule&pattern=architect&style=style_1&description=Schedule+your+tasks+through+a+dashboard+and+without+having+to+deploy+the+application.&md=1&showWatermark=1&fontSize=100px&images=calendar&widths=auto&heights=350)
 
 # Documentation
