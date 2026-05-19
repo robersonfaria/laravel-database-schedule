@@ -90,7 +90,16 @@ return [
             'queue:*',
             'schedule:*',
             'view:*',
-            'phpunit:*'
+            'phpunit:*',
+            'install:*',
+            'channel:*',
+            'about',
+            'docs',
+            'model:*',
+            'storage:unlink',
+            'lang:publish',
+            '_complete',
+            'completion',
         ]
     ],
 

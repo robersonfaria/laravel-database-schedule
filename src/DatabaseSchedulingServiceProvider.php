@@ -13,6 +13,7 @@ use Illuminate\Console\Scheduling\Schedule as BaseSchedule;
 use RobersonFaria\DatabaseSchedule\Console\Commands\TestJobCommand;
 use RobersonFaria\DatabaseSchedule\Console\Commands\ScheduleClearCacheCommand;
 use RobersonFaria\DatabaseSchedule\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServiceProvider
 {
@@ -63,8 +64,10 @@ class DatabaseSchedulingServiceProvider extends DatabaseScheduleApplicationServi
         }
 
         $this->app->resolving(BaseSchedule::class, function ($schedule) {
-            $schedule = app(Schedule::class, ['schedule' => $schedule]);
-            return $schedule->execute();
+            if (Schema::hasTable('schedules')) {
+                $schedule = app(Schedule::class, ['schedule' => $schedule]);
+                return $schedule->execute();
+            }
         });
 
         $this->commands([
