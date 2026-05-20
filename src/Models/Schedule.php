@@ -48,6 +48,7 @@ class Schedule extends Model
         'log_filename',
         'groups',
         'environments',
+        'timezone',
     ];
 
     protected $attributes = [

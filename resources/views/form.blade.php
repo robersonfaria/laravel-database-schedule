@@ -2,6 +2,7 @@
 <div x-data='{
     selectedCommand: "{{old('command', (isset($schedule) ? $schedule->command : ''))}}",
     commands: @json($commandService->get()),
+    timezones: @json(DateTimeZone::listIdentifiers(DateTimeZone::ALL)),
     arguments: @json(old('params', (isset($schedule) ? $schedule->params : []))),
     options: @json(old('options', (isset($schedule) ? $schedule->options : []))),
     get commandObject() {
@@ -151,6 +152,26 @@
                 </a>
             </small>
         @endif
+    </div>
+
+
+    <div class="form-group">
+        <label>{{ trans('schedule::schedule.fields.timezone') }}</label>
+        <select x-model=""
+                name="timezone"
+                class="form-control @error('timezone') is-invalid @enderror">
+            <option value="">{{ trans('schedule::schedule.messages.select-timezone') }}</option>
+            <template x-for="timezones in timezones">
+                <option :key="timezones"
+                        :value="timezones"
+                        x-text="timezones"
+                        :selected="timezones == selectedCommand">
+                </option>
+            </template>
+        </select>
+        @error('timezone')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
     </div>
 
     @if(config('database-schedule.enable_groups', false))
