@@ -91,7 +91,7 @@ class ScheduleController extends Controller
     {
         try {
             $schedule = app(config('database-schedule.model'));
-            $schedule->create($request->all());
+            $schedule->create($request->except('_token'));
 
             return redirect()
                 ->action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@index')
@@ -142,7 +142,7 @@ class ScheduleController extends Controller
     public function update(ScheduleRequest $request, Schedule $schedule)
     {
         try {
-            $schedule->update($request->all());
+            $schedule->update($request->except('_token'));
 
             return redirect()
                 ->action('\RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController@index')
