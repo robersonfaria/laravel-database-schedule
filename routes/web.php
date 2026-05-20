@@ -20,6 +20,10 @@ Route::post('/filter-reset', 'ScheduleController@filterReset')
     ->name(config('database-schedule.route.name', 'database-schedule') . '.filter-reset');
 Route::get('/create', 'ScheduleController@create')
     ->name(config('database-schedule.route.name', 'database-schedule') . '.create');
+Route::get('/extract', 'ScheduleController@extractFromKernel')
+    ->name(config('database-schedule.route.name', 'database-schedule') . '.extract');
+Route::post('/import', 'ScheduleController@importFromKernel')
+    ->name(config('database-schedule.route.name', 'database-schedule') . '.import');
 Route::put('/{schedule}', 'ScheduleController@update')
     ->name(config('database-schedule.route.name', 'database-schedule') . '.update');
 Route::get('/{schedule}', 'ScheduleController@show')
